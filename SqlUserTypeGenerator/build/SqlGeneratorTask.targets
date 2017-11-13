@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">  
+  <Target Name="CustomTarget" AfterTargets="Build">      
+    <!-- choose destination folder-->
+    <PropertyGroup>
+      <DestinationFolder>$([System.IO.Path]::GetFullPath($(SqlUserTypeGenerator_TargetFolder.TrimEnd('\'))))\</DestinationFolder>      
+    </PropertyGroup>
+	
+    <PropertyGroup Condition=" '$(DestinationFolder)' == '' ">
+      <DestinationFolder>$(ProjectDir)GeneratedSqlTypes\</DestinationFolder>
+    </PropertyGroup>
+    <!-- <Message Text="$(DestinationFolder)" importance="high"></Message> -->
+    <!-- run custom task via exec command - workaround for msbuild locking files ( https://connect.microsoft.com/VisualStudio/feedback/details/1047951/msbuild-locks-custom-task-assembly-dll ) -->
+    <!-- 
+    add backslash in property for prevent unwanted double-quote escaping in command line      
+    example: 
+      msbuild Project.csproj /p:SourceDir="C:\Path\" <- last quote escaped - error
+      msbuild Project.csproj /p:SourceDir="C:\Path\\" <- ok
+    -->
+    <Exec Command="&quot;$(MSBuildToolsPath)\msbuild.exe&quot; &quot;$(MSBuildThisFileDirectory)SqlTypeGeneratorRunner.targets&quot; /p:TargetDir=&quot;$(TargetDir)\&quot; /p:SourceAssemblyPath=&quot;$(TargetPath)&quot; /p:DestinationFolder=&quot;$(DestinationFolder)\&quot;"  />
+  </Target>
+</Project>
