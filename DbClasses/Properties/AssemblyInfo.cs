@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SqlUserTypeGenerator")]
+[assembly: AssemblyTitle("DbClasses")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SqlUserTypeGenerator")]
+[assembly: AssemblyProduct("DbClasses")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("11e808bf-cce0-4b3b-9a9c-6c6a11041af6")]
+[assembly: Guid("93d2f48a-432b-47a5-9b53-64508de2a1b9")]
 
 // Version information for an assembly consists of the following four values:
 //

@@ -1,1 +1,1 @@
-nuget pack SqlGeneratorTask.nuspec
+nuget pack SqlUserTypeGeneratorTask.nuspec
