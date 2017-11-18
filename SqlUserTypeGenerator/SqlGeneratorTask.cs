@@ -13,7 +13,7 @@ namespace SqlUserTypeGenerator
 
             var destFolderAbsolutePath = Path.GetFullPath(DestinationFolder);
 
-            BuildEngine.LogMessageEvent(new BuildMessageEventArgs("test custom task", destFolderAbsolutePath, "sender", MessageImportance.High));
+            //BuildEngine.LogMessageEvent(new BuildMessageEventArgs("test custom task", destFolderAbsolutePath, "sender", MessageImportance.High));
 
             if (!Directory.Exists(destFolderAbsolutePath))
             {

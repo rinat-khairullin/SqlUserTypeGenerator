@@ -1,9 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">  
   <Target Name="CustomTarget" AfterTargets="Build">      
-    <!-- choose destination folder-->
     <PropertyGroup>
-      <DestinationFolder>$([System.IO.Path]::GetFullPath($(SqlUserTypeGenerator_TargetFolder.TrimEnd('\'))))\</DestinationFolder>      
+      <SafeSqlUserTypeGenerator_TargetFolder>$(SqlUserTypeGenerator_TargetFolder.TrimEnd('\'))</SafeSqlUserTypeGenerator_TargetFolder>
+    </PropertyGroup>
+    <!-- choose destination folder-->
+    <PropertyGroup Condition=" '$(SafeSqlUserTypeGenerator_TargetFolder)' != '' " >
+      <DestinationFolder>$([System.IO.Path]::GetFullPath($(SafeSqlUserTypeGenerator_TargetFolder)))\</DestinationFolder>      
     </PropertyGroup>
 	
     <PropertyGroup Condition=" '$(DestinationFolder)' == '' ">
