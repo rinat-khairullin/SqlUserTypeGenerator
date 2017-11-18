@@ -1,10 +1,10 @@
 ﻿using System;
-
+using SqlUserTypeGenerator;
 
 
 namespace DbClasses
 {
-    //[SqlUserType("users")]
+    [SqlUserType("users")]
     public class User
     {
         public long PropLong { get; set; }     

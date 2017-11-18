@@ -35,10 +35,10 @@ namespace SqlUserTypeGenerator
                 var generatedType = SqlGenerator.GenerateUserType(type);
 
                 generatedSql =
-                    $"if object_id('{generatedType.TypeName}') is not null drop type [{generatedType.TypeName}];\r\ngo;\r\n\r\n"
+                    $"if object_id('{generatedType.TypeName}') is not null drop type [{generatedType.TypeName}];\r\ngo\r\n\r\n"
                     + $"create type [{generatedType.TypeName}] as table ( \r\n"
                     + string.Join(",\r\n", generatedType.Columns.Select(c => "\t" + c))
-                    + "\r\n)\r\ngo;";
+                    + "\r\n)\r\ngo";
 
                 var targetFile = Path.ChangeExtension(Path.Combine(destFolderAbsolutePath, GetSafeFilename(generatedType.TypeName)), "sql");                
                 

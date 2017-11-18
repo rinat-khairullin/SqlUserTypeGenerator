@@ -18,7 +18,7 @@ namespace SqlUserTypeGenerator
             { typeof(Decimal), "numeric" } ,
             { typeof(Guid), "uniqueidentifier" } ,
             { typeof(Byte[]), "varbinary" } ,
-            { typeof(Byte), "bit" } ,
+            { typeof(Byte), "tinyint" } ,
 
         };        
 
