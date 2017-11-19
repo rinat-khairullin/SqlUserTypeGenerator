@@ -9,6 +9,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbClasses", "DbClasses\DbCl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbClassesWithCustomSqlFolder", "DbClassesWithCustomSqlFolder\DbClassesWithCustomSqlFolder.csproj", "{8B7843D0-8FDE-4E87-931A-A493326F3395}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{800E93C2-38A3-4902-9ADF-28E4F6590C30}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildProps", "BuildProps", "{0B9F8F5F-B918-48C7-9044-526985F52201}"
+	ProjectSection(SolutionItems) = preProject
+		tools\BuildProps.props = tools\BuildProps.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DbMigrations", "DbMigrations", "{8242BDB1-A5FA-483B-ACBD-73A1E026BC47}"
+	ProjectSection(SolutionItems) = preProject
+		DbMigrations\DbClassesWithCustomSqlFolder\user.sql = DbMigrations\DbClassesWithCustomSqlFolder\user.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +42,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0B9F8F5F-B918-48C7-9044-526985F52201} = {800E93C2-38A3-4902-9ADF-28E4F6590C30}
+		{8242BDB1-A5FA-483B-ACBD-73A1E026BC47} = {800E93C2-38A3-4902-9ADF-28E4F6590C30}
 	EndGlobalSection
 EndGlobal
