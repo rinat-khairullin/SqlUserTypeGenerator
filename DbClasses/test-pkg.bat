@@ -1,2 +1,2 @@
-nuget update packages.config -id SqlUserTypeGenerator -source c:\code\SqlUserTypeGenerator\SqlUserTypeGenerator\
+nuget update packages.config -id SqlUserTypeGenerator
 msbuild DbClasses.csproj
