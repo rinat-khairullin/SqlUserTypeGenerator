@@ -7,7 +7,7 @@
     <authors>Rinat Khairullin</authors>
     <owners>Rinat Khairullin</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Generates SQL user type definition (UDT) from C# class</description>
+    <description>Generates SQL user-defined type (UDT) from C# class</description>
     <copyright>Copyright ©  2017</copyright>
     <dependencies />
     <frameworkAssemblies>
