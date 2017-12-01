@@ -53,7 +53,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
-    <None Include="SqlUserTypeGeneratorTask.nuspec" />
+    <None Include="SqlUserTypeGenerator.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <None Include="build\SqlTypeGeneratorRunner.targets">

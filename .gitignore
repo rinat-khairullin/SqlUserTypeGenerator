@@ -3,4 +3,6 @@ obj
 *.suo
 *.user
 packages
-SqlUserTypeGenerator/push.bat
+SqlUserTypeGenerator/run-push.bat
+SqlUserTypeGenerator/*.nupkg
+DbClasses/run-test-pkg-local.bat
