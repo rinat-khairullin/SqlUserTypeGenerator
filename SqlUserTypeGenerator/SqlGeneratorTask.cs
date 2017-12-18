@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -8,10 +9,14 @@ namespace SqlUserTypeGenerator
 {
     public class SqlGeneratorTask : ITask
     {
-        public bool Execute()
-        {            
+	    private static string StaticSourceAssemblyPath;
 
-            var destFolderAbsolutePath = Path.GetFullPath(DestinationFolder);
+		public bool Execute()
+		{
+
+			StaticSourceAssemblyPath = SourceAssemblyPath;
+			
+			var destFolderAbsolutePath = Path.GetFullPath(DestinationFolder);
 
             //BuildEngine.LogMessageEvent(new BuildMessageEventArgs("test custom task", destFolderAbsolutePath, "sender", MessageImportance.High));
 
@@ -20,35 +25,46 @@ namespace SqlUserTypeGenerator
                 Directory.CreateDirectory(destFolderAbsolutePath);
             }
 
-            var headerText = GetHeaderText();
+			var headerText = GetHeaderText();
 
-            var generatedSql = string.Empty;
-            var assembly = Assembly.LoadFile(SourceAssemblyPath);
+			var generatedSql = string.Empty;
+			AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
+			var assembly = Assembly.ReflectionOnlyLoadFrom(SourceAssemblyPath);
 
-            var types = assembly.GetTypes()
-                .Where(t => t.GetCustomAttribute<SqlUserTypeAttribute>() != null);
+			var types = assembly.GetTypes().Where(t => t.GetCustomAttributesData().Any()).ToList();
 
 
+			Console.WriteLine($"types count:{types.Count()}, types[0]: {types.FirstOrDefault().FullName}");
 
-            foreach (var type in types)
-            {
-                var generatedType = SqlGenerator.GenerateUserType(type);
+			//foreach (var type in types)
+			//{
+			//	var generatedType = SqlGenerator.GenerateUserType(type);
 
-                generatedSql =
-                    $"if object_id('{generatedType.TypeName}') is not null drop type [{generatedType.TypeName}];\r\ngo\r\n\r\n"
-                    + $"create type [{generatedType.TypeName}] as table ( \r\n"
-                    + string.Join(",\r\n", generatedType.Columns.Select(c => "\t" + c))
-                    + "\r\n)\r\ngo";
+			//	generatedSql =
+			//		$"if object_id('{generatedType.TypeName}') is not null drop type [{generatedType.TypeName}];\r\ngo\r\n\r\n"
+			//		+ $"create type [{generatedType.TypeName}] as table ( \r\n"
+			//		+ string.Join(",\r\n", generatedType.Columns.Select(c => "\t" + c))
+			//		+ "\r\n)\r\ngo";
 
-                var targetFile = Path.ChangeExtension(Path.Combine(destFolderAbsolutePath, GetSafeFilename(generatedType.TypeName)), "sql");                
-                
-                File.WriteAllText(targetFile, headerText + generatedSql, Encoding.UTF8);
-            }
-            
-            return true;
+			//	var targetFile = Path.ChangeExtension(Path.Combine(destFolderAbsolutePath, GetSafeFilename(generatedType.TypeName)), "sql");
+
+			//	File.WriteAllText(targetFile, headerText + generatedSql, Encoding.UTF8);
+			//}
+
+			return true;
         }
 
-        private string GetHeaderText()
+	    private static Assembly CurrentDomain_ReflectionOnlyAssemblyResolve(object sender, ResolveEventArgs args)
+	    {
+		    var currentDomainReflectionOnlyAssemblyResolve = Assembly.ReflectionOnlyLoadFrom(@"c:\code\SqlUserTypeGenerator\DbClasses\bin\Debug\SqlUserTypeGenerator.dll");
+
+			Console.WriteLine($"out {nameof(CurrentDomain_ReflectionOnlyAssemblyResolve)}, codebase: {currentDomainReflectionOnlyAssemblyResolve.CodeBase}");
+
+			return currentDomainReflectionOnlyAssemblyResolve;
+	    }
+
+
+		private string GetHeaderText()
         {
             var assembly = typeof(SqlGeneratorTask).Assembly;
             var an = assembly.GetName().Name;
