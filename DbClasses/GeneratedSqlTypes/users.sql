@@ -6,7 +6,7 @@ go
 create type [users] as table ( 
 	PropLong bigint not null,
 	PropLongNull bigint null,
-	PropString nvarchar(50) not null,
+	PropString nvarchar(42) not null,
 	PropBool bit not null,
 	PropBoolNull bit null,
 	PropDateTime datetime not null,

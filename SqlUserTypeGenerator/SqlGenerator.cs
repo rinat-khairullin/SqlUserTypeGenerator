@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 
 namespace SqlUserTypeGenerator
@@ -36,11 +37,13 @@ namespace SqlUserTypeGenerator
             foreach (var c in cols)
             {
                 sqlColumns.Add(CreateSqlColumnString(c));
-
             }
+
+	        var sqlUserTypeAttr = type.GetCustomAttributesData().FirstOrDefault(cad => cad.AttributeType.FullName == typeof(SqlUserTypeAttribute).FullName);	        
+
             return new SqlUserTypeDefinition()
             {
-                TypeName = type.GetCustomAttribute<SqlUserTypeAttribute>().TypeName,
+                TypeName = sqlUserTypeAttr.ConstructorArguments.FirstOrDefault().Value.ToString(),
                 Columns = sqlColumns
             };
         }
@@ -88,10 +91,11 @@ namespace SqlUserTypeGenerator
             if (DefaultTypesLengths.ContainsKey(property.PropertyType))
             {
                 var columnLength = DefaultTypesLengths[property.PropertyType];
-                var columnProps = property.GetCustomAttribute<SqlUserTypeColumnPropertiesAttribute>();
+                var columnProps = property.GetCustomAttributesData().FirstOrDefault(cad => cad.AttributeType.FullName == typeof(SqlUserTypeColumnPropertiesAttribute).FullName);
                 if (columnProps != null)
                 {
-                    columnLength = columnProps.Length == SqlUserTypeColumnPropertiesAttribute.MaxLength ? "max" : columnProps.Length.ToString(CultureInfo.InvariantCulture);
+	                var columnLengthProp = Convert.ToInt32(columnProps.ConstructorArguments.FirstOrDefault().Value);
+	                columnLength = columnLengthProp == SqlUserTypeColumnPropertiesAttribute.MaxLength ? "max" : columnLengthProp.ToString(CultureInfo.InvariantCulture);
                 }
                 columnLengthString = $"({columnLength})";
             }

@@ -8,7 +8,8 @@ namespace DbClasses
     public class User
     {
         public long PropLong { get; set; }     
-        public long? PropLongNull { get; set; }     
+        public long? PropLongNull { get; set; }
+		[SqlUserTypeColumnProperties(42)]     
         public string PropString { get; set; }
         public bool PropBool { get; set; }
         public bool? PropBoolNull { get; set; }

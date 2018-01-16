@@ -23,7 +23,7 @@ namespace SqlUserTypeGenerator
             if (!Directory.Exists(destFolderAbsolutePath))
             {
                 Directory.CreateDirectory(destFolderAbsolutePath);
-            }
+            }			
 
 			var headerText = GetHeaderText();
 
@@ -31,25 +31,23 @@ namespace SqlUserTypeGenerator
 			AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
 			var assembly = Assembly.ReflectionOnlyLoadFrom(SourceAssemblyPath);
 
-			var types = assembly.GetTypes().Where(t => t.GetCustomAttributesData().Any()).ToList();
+			var types = assembly.GetTypes().Where(t => t.GetCustomAttributesData().Any()).ToList();			
 
+			foreach (var type in types)
+			{
+				Console.WriteLine(type.FullName);
+				var generatedType = SqlGenerator.GenerateUserType(type);				
 
-			Console.WriteLine($"types count:{types.Count()}, types[0]: {types.FirstOrDefault().FullName}");
+				generatedSql =
+					$"if object_id('{generatedType.TypeName}') is not null drop type [{generatedType.TypeName}];\r\ngo\r\n\r\n"
+					+ $"create type [{generatedType.TypeName}] as table ( \r\n"
+					+ string.Join(",\r\n", generatedType.Columns.Select(c => "\t" + c))
+					+ "\r\n)\r\ngo";
 
-			//foreach (var type in types)
-			//{
-			//	var generatedType = SqlGenerator.GenerateUserType(type);
+				var targetFile = Path.ChangeExtension(Path.Combine(destFolderAbsolutePath, GetSafeFilename(generatedType.TypeName)), "sql");
 
-			//	generatedSql =
-			//		$"if object_id('{generatedType.TypeName}') is not null drop type [{generatedType.TypeName}];\r\ngo\r\n\r\n"
-			//		+ $"create type [{generatedType.TypeName}] as table ( \r\n"
-			//		+ string.Join(",\r\n", generatedType.Columns.Select(c => "\t" + c))
-			//		+ "\r\n)\r\ngo";
-
-			//	var targetFile = Path.ChangeExtension(Path.Combine(destFolderAbsolutePath, GetSafeFilename(generatedType.TypeName)), "sql");
-
-			//	File.WriteAllText(targetFile, headerText + generatedSql, Encoding.UTF8);
-			//}
+				File.WriteAllText(targetFile, headerText + generatedSql, Encoding.UTF8);
+			}
 
 			return true;
         }
