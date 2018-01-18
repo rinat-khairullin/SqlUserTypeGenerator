@@ -53,8 +53,12 @@ namespace SqlUserTypeGenerator
         }
 
 	    private static Assembly CurrentDomain_ReflectionOnlyAssemblyResolve(object sender, ResolveEventArgs args)
-	    {
-		    var currentDomainReflectionOnlyAssemblyResolve = Assembly.ReflectionOnlyLoadFrom(@"c:\code\SqlUserTypeGenerator\DbClasses\bin\Debug\SqlUserTypeGenerator.dll");
+	    {		    
+
+		    var sqlUserTypeGeneratorAssemblyPath = Path.Combine(Path.GetDirectoryName(StaticSourceAssemblyPath),
+			    "SqlUserTypeGenerator.dll");
+
+			var currentDomainReflectionOnlyAssemblyResolve = Assembly.ReflectionOnlyLoadFrom(sqlUserTypeGeneratorAssemblyPath);
 
 			Console.WriteLine($"out {nameof(CurrentDomain_ReflectionOnlyAssemblyResolve)}, codebase: {currentDomainReflectionOnlyAssemblyResolve.CodeBase}");
 
