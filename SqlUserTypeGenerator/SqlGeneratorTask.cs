@@ -23,23 +23,35 @@ namespace SqlUserTypeGenerator
             if (!Directory.Exists(destFolderAbsolutePath))
             {
                 Directory.CreateDirectory(destFolderAbsolutePath);
-            }			
-
-			var headerText = GetHeaderText();
+            }						
 
 			var generatedSql = string.Empty;
 			AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
-			var assembly = Assembly.ReflectionOnlyLoadFrom(SourceAssemblyPath);
 
-			var types = assembly.GetTypes().Where(t => t.GetCustomAttributesData().Any()).ToList();			
+			//load all assemblies in project output folder to reflection-only context
+			var files = Directory.GetFiles(Path.GetDirectoryName(StaticSourceAssemblyPath))
+				.Where(f => IsEqualStrings(Path.GetExtension(f), ".dll"));
 
-			foreach (var type in types)
+			foreach (var file in files)
 			{
-				Console.WriteLine(type.FullName);
-				var generatedType = SqlGenerator.GenerateUserType(type);				
+				Assembly.ReflectionOnlyLoadFrom(file);
+			}
 
+			//load target assembly
+			Assembly assembly = Assembly.ReflectionOnlyLoadFrom(SourceAssemblyPath); ;
+
+			//get classes with custom attribute
+			Func<Type, bool> typeWithSqltTypeAttributePredicate = t => t.GetCustomAttributesData().Any(cad => IsEqualStrings(cad.AttributeType.FullName, typeof(SqlUserTypeAttribute).FullName));
+
+			var types = assembly.GetTypes().Where(typeWithSqltTypeAttributePredicate).ToList();
+
+			var headerText = GetHeaderText();
+			foreach (var type in types)
+			{				
+				var generatedType = SqlGenerator.GenerateUserType(type);
+				
 				generatedSql =
-					$"if object_id('{generatedType.TypeName}') is not null drop type [{generatedType.TypeName}];\r\ngo\r\n\r\n"
+					$"if type_id('{generatedType.TypeName}') is not null drop type [{generatedType.TypeName}];\r\ngo\r\n\r\n"
 					+ $"create type [{generatedType.TypeName}] as table ( \r\n"
 					+ string.Join(",\r\n", generatedType.Columns.Select(c => "\t" + c))
 					+ "\r\n)\r\ngo";
@@ -52,19 +64,17 @@ namespace SqlUserTypeGenerator
 			return true;
         }
 
-	    private static Assembly CurrentDomain_ReflectionOnlyAssemblyResolve(object sender, ResolveEventArgs args)
-	    {		    
-
-		    var sqlUserTypeGeneratorAssemblyPath = Path.Combine(Path.GetDirectoryName(StaticSourceAssemblyPath),
-			    "SqlUserTypeGenerator.dll");
-
-			var currentDomainReflectionOnlyAssemblyResolve = Assembly.ReflectionOnlyLoadFrom(sqlUserTypeGeneratorAssemblyPath);
-
-			Console.WriteLine($"out {nameof(CurrentDomain_ReflectionOnlyAssemblyResolve)}, codebase: {currentDomainReflectionOnlyAssemblyResolve.CodeBase}");
-
-			return currentDomainReflectionOnlyAssemblyResolve;
+	    private bool IsEqualStrings(string s1, string s2)
+	    {
+		    return string.Compare(s1, s2, StringComparison.InvariantCultureIgnoreCase) == 0;
 	    }
 
+	    private Assembly CurrentDomain_ReflectionOnlyAssemblyResolve(object sender, ResolveEventArgs args)
+	    {
+		    string missedAssemblyFullName = args.Name;
+		    Assembly assembly = Assembly.ReflectionOnlyLoad(missedAssemblyFullName);
+		    return assembly;
+	    }
 
 		private string GetHeaderText()
         {

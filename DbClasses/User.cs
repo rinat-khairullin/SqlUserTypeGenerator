@@ -1,14 +1,19 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 using SqlUserTypeGenerator;
 
 
 namespace DbClasses
 {
     [SqlUserType("users")]
-    public class User
+	[Table("test")]
+    public class User : BaseUser
     {
-        public long PropLong { get; set; }     
+		[JsonIgnore]
+		public long PropLong { get; set; }     
         public long? PropLongNull { get; set; }
+	    [JsonIgnore]
 		[SqlUserTypeColumnProperties(42)]     
         public string PropString { get; set; }
         public bool PropBool { get; set; }
@@ -27,4 +32,11 @@ namespace DbClasses
         public byte PropByte { get; set; }
         public byte? PropByteNull { get; set; }
     }
+
+	[SqlUserType("base_user")]
+	public class BaseUser
+	{
+		[SqlUserTypeColumnProperties(23)]
+		public string BaseProp { get; set; }
+	}
 }
