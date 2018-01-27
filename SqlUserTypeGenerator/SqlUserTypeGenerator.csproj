@@ -69,9 +69,9 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <!-- uncomment for local debug -->
-    <!-- <PostBuildEvent>powershell -file $(SolutionDir)\tools\CopyTaskToPackageFolder\copy.ps1 -SourceFile $(TargetPath) -SolutionFolder $(SolutionDir)</PostBuildEvent> -->
+    <!-- <PostBuildEvent>powershell -file $(SolutionDir)\tools\CopyTaskToPackageFolder\copy.ps1 -SolutionFolder $(SolutionDir)</PostBuildEvent> -->
   </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

@@ -1,9 +1,14 @@
 param(
-[string]$SourceFile,
 [string]$SolutionFolder
 );
 
-[xml]$xmlNuspec = Get-Content -Path $SolutionFolder\SqlUserTypeGenerator\SqlUserTypeGenerator.nuspec
+[string]$userTypeGeneratorProjectDir = "$SolutionFolder`SqlUserTypeGenerator";
+
+[xml]$xmlNuspec = Get-Content -Path $userTypeGeneratorProjectDir\SqlUserTypeGenerator.nuspec
 [string]$packageVersion = $xmlNuspec.package.metadata.version;
 
-Copy-Item $SourceFile "$SolutionFolder\packages\SqlUserTypeGenerator.$packageVersion\lib\"
+[string]$packageDir = "$SolutionFolder`\packages\SqlUserTypeGenerator.$packageVersion";
+
+Copy-Item "$userTypeGeneratorProjectDir`\bin\Debug\SqlUserTypeGenerator.dll" "$packageDir\lib\"
+
+Copy-Item "$userTypeGeneratorProjectDir`\build\*.targets" "$packageDir\build\"
