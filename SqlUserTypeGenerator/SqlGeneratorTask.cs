@@ -9,13 +9,9 @@ namespace SqlUserTypeGenerator
 {
     public class SqlGeneratorTask : ITask
     {
-	    private static string StaticSourceAssemblyPath;
-
 		public bool Execute()
 		{
-
-			StaticSourceAssemblyPath = SourceAssemblyPath;
-			
+						
 			var destFolderAbsolutePath = Path.GetFullPath(DestinationFolder);
 
             //BuildEngine.LogMessageEvent(new BuildMessageEventArgs("test custom task", destFolderAbsolutePath, "sender", MessageImportance.High));
@@ -24,18 +20,10 @@ namespace SqlUserTypeGenerator
             {
                 Directory.CreateDirectory(destFolderAbsolutePath);
             }						
-
-			var generatedSql = string.Empty;
+			
 			AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
 
-			//load all assemblies in project output folder to reflection-only context
-			var files = Directory.GetFiles(Path.GetDirectoryName(StaticSourceAssemblyPath))
-				.Where(f => StringHelper.IsEqualStrings(Path.GetExtension(f), ".dll"));
-
-			foreach (var file in files)
-			{
-				Assembly.ReflectionOnlyLoadFrom(file);
-			}
+			LoadDependentAssemblies(SourceAssemblyPath);
 
 			//load target assembly
 			Assembly assembly = Assembly.ReflectionOnlyLoadFrom(SourceAssemblyPath); ;
@@ -43,14 +31,11 @@ namespace SqlUserTypeGenerator
 			//get classes with custom attribute			
 			var types = assembly.GetTypes()
 				.Select(t =>
-					new UserTypeWithSqlAttribute()
+					new UserTypeWithSqlUserTypeAttribute()
 					{
 						UserType = t,
-						SqlUserTypeAttributeData = t.GetCustomAttributesData()
-							.FirstOrDefault(cad => StringHelper.IsEqualStrings(cad.AttributeType.FullName,
-								typeof(SqlUserTypeAttribute).FullName))
+						SqlUserTypeAttributeData = CustomAttributesHelper.GetSqlUserTypeAttributeData(t)
 					})
-
 				.Where(ut => ut.SqlUserTypeAttributeData != null)
 				.ToList()
 				;
@@ -60,7 +45,7 @@ namespace SqlUserTypeGenerator
 			{				
 				var generatedType = SqlGenerator.GenerateUserType(type.UserType, type.SqlUserTypeAttributeData);
 				
-				generatedSql =
+				var generatedSql =
 					$"if type_id('{generatedType.TypeName}') is not null drop type [{generatedType.TypeName}];\r\ngo\r\n\r\n"
 					+ $"create type [{generatedType.TypeName}] as table ( \r\n"
 					+ string.Join(",\r\n", generatedType.Columns.Select(c => "\t" + c))
@@ -74,7 +59,21 @@ namespace SqlUserTypeGenerator
 			return true;
         }
 
-	    internal class UserTypeWithSqlAttribute
+	    private void LoadDependentAssemblies(string sourceAssemblyPath)
+	    {
+			//load all assemblies in project output folder to reflection-only context
+		    var directoryName = Path.GetDirectoryName(sourceAssemblyPath);
+
+		    var files = Directory.GetFiles(directoryName)
+			    .Where(f => StringHelper.IsEqualStrings(Path.GetExtension(f), ".dll"));
+
+		    foreach (var file in files)
+		    {
+			    Assembly.ReflectionOnlyLoadFrom(file);
+		    }
+	    }
+
+	    internal class UserTypeWithSqlUserTypeAttribute
 	    {
 		    public Type UserType { get; set; }
 		    public CustomAttributeData SqlUserTypeAttributeData { get; set; }

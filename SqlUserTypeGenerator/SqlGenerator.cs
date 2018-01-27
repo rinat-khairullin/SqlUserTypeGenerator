@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Reflection;
 
 namespace SqlUserTypeGenerator
@@ -37,14 +36,13 @@ namespace SqlUserTypeGenerator
             foreach (var c in cols)
             {
                 sqlColumns.Add(CreateSqlColumnString(c));
-            }	       	        			
-	        var typeNameFromAttr = sqlUserTypeAttributeData.NamedArguments?
-				.FirstOrDefault(na => StringHelper.IsEqualStrings(na.MemberName, nameof(SqlUserTypeAttribute.TypeName)))
-				.TypedValue.Value;	        			
+            }
+				        
+	        var typeNameFromAttr = CustomAttributesHelper.GetTypeName(sqlUserTypeAttributeData);	        			
 
 			return new SqlUserTypeDefinition()
             {
-                TypeName = typeNameFromAttr?.ToString() ?? type.Name,
+                TypeName = typeNameFromAttr ?? type.Name,
 				Columns = sqlColumns
             };
         }
@@ -93,21 +91,11 @@ namespace SqlUserTypeGenerator
             {
                 var columnLength = DefaultTypesLengths[property.PropertyType];
 
-                var columnProps = property.GetCustomAttributesData()
-					.FirstOrDefault(cad => StringHelper.IsEqualStrings(cad.AttributeType.FullName, typeof(SqlUserTypeColumnPropertiesAttribute).FullName));
-
-	            if (columnProps != null && columnProps.NamedArguments.Any())
+	            var columnLengthFromAttr = CustomAttributesHelper.GetSqlUserTypeColumnLength(property);
+	            if (columnLengthFromAttr.HasValue)
 	            {
-					var columnLengthPropObject = columnProps.NamedArguments
-			            .FirstOrDefault(na => StringHelper.IsEqualStrings(na.MemberName,
-				            nameof(SqlUserTypeColumnPropertiesAttribute.Length))).TypedValue.Value;
-
-		            if (columnLengthPropObject != null)
-		            {
-			            var columnLengthProp = Convert.ToInt32(columnLengthPropObject);
-			            columnLength = columnLengthProp == SqlUserTypeColumnPropertiesAttribute.MaxLength ? "max" : columnLengthProp.ToString(CultureInfo.InvariantCulture);
-		            }
-				}
+					columnLength = columnLengthFromAttr.Value == SqlUserTypeColumnPropertiesAttribute.MaxLength ? "max" : columnLengthFromAttr.Value.ToString(CultureInfo.InvariantCulture);
+				}                
 	            columnLengthString = $"({columnLength})";
             }
 
