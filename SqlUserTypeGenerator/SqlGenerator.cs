@@ -29,7 +29,7 @@ namespace SqlUserTypeGenerator
             { typeof(decimal), "18"}
         };
 
-        internal static SqlUserTypeDefinition GenerateUserType(Type type)
+        internal static SqlUserTypeDefinition GenerateUserType(Type type, CustomAttributeData sqlUserTypeAttributeData)
         {
             var cols = type.GetProperties();
 
@@ -37,14 +37,15 @@ namespace SqlUserTypeGenerator
             foreach (var c in cols)
             {
                 sqlColumns.Add(CreateSqlColumnString(c));
-            }
+            }	       	        			
+	        var typeNameFromAttr = sqlUserTypeAttributeData.NamedArguments?
+				.FirstOrDefault(na => StringHelper.IsEqualStrings(na.MemberName, nameof(SqlUserTypeAttribute.TypeName)))
+				.TypedValue.Value;	        			
 
-	        var sqlUserTypeAttr = type.GetCustomAttributesData().FirstOrDefault(cad => cad.AttributeType.FullName == typeof(SqlUserTypeAttribute).FullName);	        
-
-            return new SqlUserTypeDefinition()
+			return new SqlUserTypeDefinition()
             {
-                TypeName = sqlUserTypeAttr.ConstructorArguments.FirstOrDefault().Value.ToString(),
-                Columns = sqlColumns
+                TypeName = typeNameFromAttr?.ToString() ?? type.Name,
+				Columns = sqlColumns
             };
         }
 
@@ -91,13 +92,23 @@ namespace SqlUserTypeGenerator
             if (DefaultTypesLengths.ContainsKey(property.PropertyType))
             {
                 var columnLength = DefaultTypesLengths[property.PropertyType];
-                var columnProps = property.GetCustomAttributesData().FirstOrDefault(cad => cad.AttributeType.FullName == typeof(SqlUserTypeColumnPropertiesAttribute).FullName);
-                if (columnProps != null)
-                {
-	                var columnLengthProp = Convert.ToInt32(columnProps.ConstructorArguments.FirstOrDefault().Value);
-	                columnLength = columnLengthProp == SqlUserTypeColumnPropertiesAttribute.MaxLength ? "max" : columnLengthProp.ToString(CultureInfo.InvariantCulture);
-                }
-                columnLengthString = $"({columnLength})";
+
+                var columnProps = property.GetCustomAttributesData()
+					.FirstOrDefault(cad => StringHelper.IsEqualStrings(cad.AttributeType.FullName, typeof(SqlUserTypeColumnPropertiesAttribute).FullName));
+
+	            if (columnProps != null && columnProps.NamedArguments.Any())
+	            {
+					var columnLengthPropObject = columnProps.NamedArguments
+			            .FirstOrDefault(na => StringHelper.IsEqualStrings(na.MemberName,
+				            nameof(SqlUserTypeColumnPropertiesAttribute.Length))).TypedValue.Value;
+
+		            if (columnLengthPropObject != null)
+		            {
+			            var columnLengthProp = Convert.ToInt32(columnLengthPropObject);
+			            columnLength = columnLengthProp == SqlUserTypeColumnPropertiesAttribute.MaxLength ? "max" : columnLengthProp.ToString(CultureInfo.InvariantCulture);
+		            }
+				}
+	            columnLengthString = $"({columnLength})";
             }
 
 

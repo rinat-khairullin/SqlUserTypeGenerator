@@ -6,7 +6,7 @@ using SqlUserTypeGenerator;
 
 namespace DbClasses
 {
-    [SqlUserType("users")]
+    [SqlUserType(TypeName = "users")]
 	[Table("test")]
     public class User : BaseUser
     {
@@ -14,7 +14,7 @@ namespace DbClasses
 		public long PropLong { get; set; }     
         public long? PropLongNull { get; set; }
 	    [JsonIgnore]
-		[SqlUserTypeColumnProperties(43)]     
+		[SqlUserTypeColumnProperties(Length = 12)]     
         public string PropString { get; set; }
         public bool PropBool { get; set; }
         public bool? PropBoolNull { get; set; }
@@ -33,10 +33,10 @@ namespace DbClasses
         public byte? PropByteNull { get; set; }
     }
 
-	[SqlUserType("base_user")]
+	[SqlUserType]
 	public class BaseUser
 	{
-		[SqlUserTypeColumnProperties(23)]
+		[SqlUserTypeColumnProperties(Length = 23)]
 		public string BaseProp { get; set; }
 	}
 }

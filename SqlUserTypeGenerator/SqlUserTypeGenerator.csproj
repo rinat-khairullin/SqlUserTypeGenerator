@@ -47,13 +47,16 @@
     <Compile Include="SqlUserTypeAttribute.cs" />
     <Compile Include="SqlUserTypeColumnPropertiesAttribute.cs" />
     <Compile Include="SqlUserTypeDefinition.cs" />
+    <Compile Include="StringHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="build\SqlUserTypeGenerator.targets">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
-    <None Include="SqlUserTypeGenerator.nuspec" />
+    <None Include="SqlUserTypeGenerator.nuspec">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="build\SqlTypeGeneratorRunner.targets">
@@ -64,9 +67,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-		<!-- uncomment for local debug -->
-    <!-- <PostBuildEvent>powershell -file $(SolutionDir)\tools\CopyTaskToPackageFolder\copy.ps1 -SourceFile $(TargetPath) -SolutionFolder $(SolutionDir)</PostBuildEvent>     -->
-
+    <!-- uncomment for local debug -->
+    <!-- <PostBuildEvent>powershell -file $(SolutionDir)\tools\CopyTaskToPackageFolder\copy.ps1 -SourceFile $(TargetPath) -SolutionFolder $(SolutionDir)</PostBuildEvent> -->
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
