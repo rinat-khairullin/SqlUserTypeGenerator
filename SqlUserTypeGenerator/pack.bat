@@ -1,2 +1,2 @@
-msbuild SqlUserTypeGenerator.csproj /p:Configuration=Debug
+msbuild SqlUserTypeGenerator.csproj /p:Configuration=Release
 nuget pack SqlUserTypeGenerator.nuspec

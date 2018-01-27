@@ -50,7 +50,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="SqlUserTypeGenerator, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SqlUserTypeGenerator.1.0.8\lib\SqlUserTypeGenerator.dll</HintPath>
+      <HintPath>..\packages\SqlUserTypeGenerator.1.0.8\lib\net452\SqlUserTypeGenerator.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

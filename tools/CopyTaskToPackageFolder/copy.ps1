@@ -9,6 +9,6 @@ param(
 
 [string]$packageDir = "$SolutionFolder`\packages\SqlUserTypeGenerator.$packageVersion";
 
-Copy-Item "$userTypeGeneratorProjectDir`\bin\Debug\SqlUserTypeGenerator.dll" "$packageDir\lib\"
+Copy-Item "$userTypeGeneratorProjectDir`\bin\Debug\SqlUserTypeGenerator.dll" "$packageDir\lib\net452\"
 
 Copy-Item "$userTypeGeneratorProjectDir`\build\*.targets" "$packageDir\build\"
