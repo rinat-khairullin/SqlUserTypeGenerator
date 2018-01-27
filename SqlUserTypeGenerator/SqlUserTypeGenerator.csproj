@@ -64,7 +64,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /Y $(TargetPath) $(SolutionDir)packages\SqlUserTypeGenerator.1.0.23\lib\</PostBuildEvent>
+		<!-- uncomment for local debug -->
+    <!-- <PostBuildEvent>powershell -file $(SolutionDir)\tools\CopyTaskToPackageFolder\copy.ps1 -SourceFile $(TargetPath) -SolutionFolder $(SolutionDir)</PostBuildEvent>     -->
+
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

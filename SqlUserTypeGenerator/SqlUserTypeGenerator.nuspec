@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>SqlUserTypeGenerator</id>
-    <version>1.0.24</version>
+    <version>1.0.23</version>
     <title>SqlUserTypeGenerator</title>
     <authors>Rinat Khairullin</authors>
     <owners>Rinat Khairullin</owners>
