@@ -46,7 +46,7 @@ namespace SqlUserTypeGenerator
 				var generatedType = SqlGenerator.GenerateUserType(type.UserType, type.SqlUserTypeAttributeData);
 				
 				var generatedSql =
-					$"if type_id('{generatedType.TypeName}') is not null drop type [{generatedType.TypeName}];\r\ngo\r\n\r\n"
+					$"if type_id(N'[{generatedType.TypeName}]') is not null drop type [{generatedType.TypeName}]\r\ngo\r\n\r\n"
 					+ $"create type [{generatedType.TypeName}] as table ( \r\n"
 					+ string.Join(",\r\n", generatedType.Columns.Select(c => "\t" + c))
 					+ "\r\n)\r\ngo";
