@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildProps", "BuildProps", "{0B9F8F5F-B918-48C7-9044-526985F52201}"
 	ProjectSection(SolutionItems) = preProject
-		tools\BuildProps.props = tools\BuildProps.props
+		tools\SqlUserTypeGenerator_GlobalProps.props = tools\SqlUserTypeGenerator_GlobalProps.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DbMigrations", "DbMigrations", "{8242BDB1-A5FA-483B-ACBD-73A1E026BC47}"

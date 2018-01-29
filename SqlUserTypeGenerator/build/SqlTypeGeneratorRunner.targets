@@ -3,6 +3,10 @@
   <UsingTask TaskName="SqlUserTypeGenerator.SqlGeneratorTask"
              AssemblyFile="$(TargetDir)SqlUserTypeGenerator.dll"/>
   <Target Name="SqlUserTypeGeneratorTask">    
-    <SqlGeneratorTask SourceAssemblyPath="$(SourceAssemblyPath)" DestinationFolder="$(DestinationFolder)" />    
+    <SqlGeneratorTask SourceAssemblyPath="$(SourceAssemblyPath)" 
+					  DestinationFolder="$(DestinationFolder)"
+                      EncodedTypePreCreateCode="$(EncodedTypePreCreateCode)"
+                      EncodedTypePostCreateCode="$(EncodedTypePostCreateCode)"
+					  />    
   </Target>  
 </Project>

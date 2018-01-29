@@ -18,7 +18,8 @@ namespace DbClassesWithCustomSqlFolder
         public bool? PropBoolNull { get; set; }
         public DateTime PropDateTime { get; set; }
         public DateTime? PropDateTimeNull { get; set; }
-        public decimal PropDecimal { get; set; }
+	    [SqlUserTypeColumnProperties(Length = 10)]
+		public decimal PropDecimal { get; set; }
         public decimal? PropDecimalNull { get; set; }
         public double PropDouble { get; set; }
         public double? PropDoubleNull { get; set; }

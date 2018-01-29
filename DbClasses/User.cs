@@ -14,7 +14,7 @@ namespace DbClasses
 		public long PropLong { get; set; }     
         public long? PropLongNull { get; set; }
 	    [JsonIgnore]
-		[SqlUserTypeColumnProperties(Length = 11)]     
+		[SqlUserTypeColumnProperties(Length = 10)]     
         public string PropString { get; set; }
         public bool PropBool { get; set; }
         public bool? PropBoolNull { get; set; }
@@ -31,6 +31,7 @@ namespace DbClasses
         public byte[] PropByteArray { get; set; }
         public byte PropByte { get; set; }
         public byte? PropByteNull { get; set; }
+
     }
 
 	[SqlUserType]

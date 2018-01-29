@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -9,16 +10,23 @@ namespace SqlUserTypeGenerator
 {
     public class SqlGeneratorTask : ITask
     {
+	    public string SourceAssemblyPath { get; set; }
+		//absolute path to generated files
+	    public string DestinationFolder { get; set; }
+
+	    public string EncodedTypePreCreateCode { get; set; }
+	    public string EncodedTypePostCreateCode { get; set; }
+
+		public IBuildEngine BuildEngine { get; set; }
+	    public ITaskHost HostObject { get; set; }
+
 		public bool Execute()
 		{
-						
-			var destFolderAbsolutePath = Path.GetFullPath(DestinationFolder);
-
             //BuildEngine.LogMessageEvent(new BuildMessageEventArgs("test custom task", destFolderAbsolutePath, "sender", MessageImportance.High));
 
-            if (!Directory.Exists(destFolderAbsolutePath))
+            if (!Directory.Exists(DestinationFolder))
             {
-                Directory.CreateDirectory(destFolderAbsolutePath);
+                Directory.CreateDirectory(DestinationFolder);
             }						
 			
 			AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
@@ -27,37 +35,55 @@ namespace SqlUserTypeGenerator
 
 			//load target assembly
 			Assembly assembly = Assembly.ReflectionOnlyLoadFrom(SourceAssemblyPath); ;
-
-			//get classes with custom attribute			
-			var types = assembly.GetTypes()
-				.Select(t =>
-					new UserTypeWithSqlUserTypeAttribute()
-					{
-						UserType = t,
-						SqlUserTypeAttributeData = CustomAttributesHelper.GetSqlUserTypeAttributeData(t)
-					})
-				.Where(ut => ut.SqlUserTypeAttributeData != null)
-				.ToList()
-				;
+			
+			var types = GetTypesWithSqlTypeAttribute(assembly);
 
 			var headerText = GetHeaderText();
 			foreach (var type in types)
 			{				
 				var generatedType = SqlGenerator.GenerateUserType(type.UserType, type.SqlUserTypeAttributeData);
-				
-				var generatedSql =
-					$"if type_id(N'[{generatedType.TypeName}]') is not null drop type [{generatedType.TypeName}]\r\ngo\r\n\r\n"
-					+ $"create type [{generatedType.TypeName}] as table ( \r\n"
-					+ string.Join(",\r\n", generatedType.Columns.Select(c => "\t" + c))
-					+ "\r\n)\r\ngo";
 
-				var targetFile = Path.ChangeExtension(Path.Combine(destFolderAbsolutePath, GetSafeFilename(generatedType.TypeName)), "sql");
+				var generatedSql = BuildSqlText(generatedType);
+
+				var targetFile = Path.ChangeExtension(Path.Combine(DestinationFolder, GetSafeFilename(generatedType.TypeName)), "sql");
 
 				File.WriteAllText(targetFile, headerText + generatedSql, Encoding.UTF8);
 			}
 
 			return true;
         }
+
+	    private List<UserTypeWithSqlUserTypeAttribute> GetTypesWithSqlTypeAttribute(Assembly assembly)
+	    {
+		    return assembly.GetTypes()
+			    .Select(t =>
+				    new UserTypeWithSqlUserTypeAttribute()
+				    {
+					    UserType = t,
+					    SqlUserTypeAttributeData = CustomAttributesHelper.GetSqlUserTypeAttributeData(t)
+				    })
+			    .Where(ut => ut.SqlUserTypeAttributeData != null)
+			    .ToList();
+	    }
+
+	    private string BuildSqlText(SqlUserTypeDefinition generatedType)
+	    {
+		    var typeNameReplaceString = "$typename$";
+		    string typePreCreateCode = StringHelper.DecodeArgument(EncodedTypePreCreateCode)?.Replace(typeNameReplaceString, generatedType.TypeName);
+		    string typePostCreateCode = StringHelper.DecodeArgument(EncodedTypePostCreateCode)?.Replace(typeNameReplaceString, generatedType.TypeName);
+
+			return string.Empty		           
+		           + (!string.IsNullOrEmpty(typePreCreateCode) ? $"{typePreCreateCode}\r\n" : string.Empty)
+
+		           + $"create type [{generatedType.TypeName}] as table ( \r\n"
+		           + string.Join(",\r\n", generatedType.Columns.Select(c => "\t" + c))
+		           + "\r\n)\r\ngo"
+
+				   + (!string.IsNullOrEmpty(typePostCreateCode) ? $"\r\n{typePostCreateCode}" : string.Empty)
+				   ;
+	    }
+
+	    
 
 	    private void LoadDependentAssemblies(string sourceAssemblyPath)
 	    {
@@ -100,12 +126,6 @@ namespace SqlUserTypeGenerator
 
             return string.Join("", filename.Split(Path.GetInvalidFileNameChars()));
 
-        }
-
-        public string SourceAssemblyPath { get; set; }
-        public string DestinationFolder { get; set; }
-
-        public IBuildEngine BuildEngine { get; set; }
-        public ITaskHost HostObject { get; set; }
+        }        
     }
 }

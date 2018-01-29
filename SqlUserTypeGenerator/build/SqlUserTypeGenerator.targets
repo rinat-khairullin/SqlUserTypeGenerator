@@ -1,18 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">  
-  <Target Name="CustomTarget" AfterTargets="Build" Condition="$(BuildingInsideVisualStudio) != '' ">      
-    <PropertyGroup>
-      <SafeSqlUserTypeGenerator_TargetFolder>$(SqlUserTypeGenerator_TargetFolder.TrimEnd('\'))</SafeSqlUserTypeGenerator_TargetFolder>
-    </PropertyGroup>
-    <!-- choose destination folder-->
-    <PropertyGroup Condition=" '$(SafeSqlUserTypeGenerator_TargetFolder)' != '' " >
-      <DestinationFolder>$([System.IO.Path]::GetFullPath($(SafeSqlUserTypeGenerator_TargetFolder)))\</DestinationFolder>      
-    </PropertyGroup>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<UsingTask TaskName="SqlUserTypeGenerator.ArgumentEncodeTask"
+	           AssemblyFile="$(TargetDir)SqlUserTypeGenerator.dll"/>
+	<UsingTask TaskName="SqlUserTypeGenerator.BuildDestinationFolderTask"
+	           AssemblyFile="$(TargetDir)SqlUserTypeGenerator.dll"/>
 	
-    <PropertyGroup Condition=" '$(DestinationFolder)' == '' ">
-      <DestinationFolder>$(ProjectDir)GeneratedSqlTypes\</DestinationFolder>
-    </PropertyGroup>
-    <!-- <Message Text="$(DestinationFolder)" importance="high"></Message> -->
+	<Target Name="CustomTarget" AfterTargets="Build" Condition="$(BuildingInsideVisualStudio) != '' OR $(SqlUserTypeGenerator_LocalDbg) != '' ">
+		
+	<ArgumentEncodeTask	Value="$(SqlUserTypeGenerator_TypePreCreateCode)">
+		<Output TaskParameter="EncodedArgument" PropertyName="EncodedTypePreCreateCode" />
+	</ArgumentEncodeTask>	  		
+	<ArgumentEncodeTask	Value="$(SqlUserTypeGenerator_TypePostCreateCode)">
+		<Output TaskParameter="EncodedArgument" PropertyName="EncodedTypePostCreateCode" />
+	</ArgumentEncodeTask>	  		
+	<BuildDestinationFolderTask	Value="$(SqlUserTypeGenerator_TargetFolder)"
+								ProjectDir="$(ProjectDir)">
+		<Output TaskParameter="Path" PropertyName="DestinationFolder" />
+	</BuildDestinationFolderTask>	  		
+		
     <!-- run custom task via exec command - workaround for msbuild locking files ( https://connect.microsoft.com/VisualStudio/feedback/details/1047951/msbuild-locks-custom-task-assembly-dll ) -->
     <!-- 
     add backslash in property for prevent unwanted double-quote escaping in command line      
@@ -20,6 +25,6 @@
       msbuild Project.csproj /p:SourceDir="C:\Path\" <- last quote escaped - error
       msbuild Project.csproj /p:SourceDir="C:\Path\\" <- ok
     -->
-    <Exec Command="&quot;$(MSBuildToolsPath)\msbuild.exe&quot; &quot;$(MSBuildThisFileDirectory)SqlTypeGeneratorRunner.targets&quot; /p:TargetDir=&quot;$(TargetDir)\&quot; /p:SourceAssemblyPath=&quot;$(TargetPath)&quot; /p:DestinationFolder=&quot;$(DestinationFolder)\&quot;"  />
-  </Target>
+    <Exec Command="&quot;$(MSBuildToolsPath)\msbuild.exe&quot; &quot;$(MSBuildThisFileDirectory)SqlTypeGeneratorRunner.targets&quot; /p:TargetDir=&quot;$(TargetDir)\&quot; /p:SourceAssemblyPath=&quot;$(TargetPath)&quot; /p:DestinationFolder=&quot;$(DestinationFolder)&quot; /p:EncodedTypePreCreateCode=&quot;$(EncodedTypePreCreateCode)&quot; /p:EncodedTypePostCreateCode=&quot;$(EncodedTypePostCreateCode)&quot;"  />
+  </Target>	
 </Project>
