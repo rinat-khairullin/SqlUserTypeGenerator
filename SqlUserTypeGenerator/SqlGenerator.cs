@@ -7,7 +7,8 @@ namespace SqlUserTypeGenerator
 {
     public class SqlGenerator
     {
-        private static readonly Dictionary<Type, string> SupportedClrTypes = new Dictionary<Type, string>()
+
+		private static readonly Dictionary<Type, string> SupportedClrTypes = new Dictionary<Type, string>()
         {
             { typeof(Int64), "bigint" } ,
             { typeof(string), "nvarchar" } ,
@@ -21,12 +22,6 @@ namespace SqlUserTypeGenerator
             { typeof(Byte), "tinyint" } ,
 
         };        
-
-        public static Dictionary<Type, string> DefaultTypesLengths  = new Dictionary<Type, string>()
-        {
-            { typeof(string), "50" },
-            { typeof(decimal), "18"}
-        };
 
         internal static SqlUserTypeDefinition GenerateUserType(Type type, CustomAttributeData sqlUserTypeAttributeData)
         {
@@ -87,20 +82,39 @@ namespace SqlUserTypeGenerator
 
             var columnLengthString = string.Empty;
 
-            if (DefaultTypesLengths.ContainsKey(property.PropertyType))
-            {
-                var columnLength = DefaultTypesLengths[property.PropertyType];
+	        if (notNullableType == typeof(string))
+	        {
+				columnLengthString = "50";
 
-	            var columnLengthFromAttr = CustomAttributesHelper.GetSqlUserTypeColumnLength(property);
-	            if (columnLengthFromAttr.HasValue)
-	            {
-					columnLength = columnLengthFromAttr.Value == SqlUserTypeColumnPropertiesAttribute.MaxLength ? "max" : columnLengthFromAttr.Value.ToString(CultureInfo.InvariantCulture);
-				}                
-	            columnLengthString = $"({columnLength})";
-            }
+		        var columnLengthFromAttr = CustomAttributesHelper.GetSqlUserTypeColumnLength(property);
+		        if (columnLengthFromAttr.HasValue)
+		        {
+			        columnLengthString = columnLengthFromAttr.Value == SqlUserTypeColumnPropertiesAttribute.MaxLength ? "max" : columnLengthFromAttr.Value.ToString(CultureInfo.InvariantCulture);
+		        }
+						         
+			}
+	        else if(notNullableType == typeof(decimal))
+	        {
+		        var presicion = "18";
+		        columnLengthString = presicion;
+				var precisionFromAttr = CustomAttributesHelper.GetSqlUserTypeColumnPresicion(property);
+		        if (precisionFromAttr.HasValue)
+		        {
+			        presicion = precisionFromAttr.Value.ToString(CultureInfo.InvariantCulture);
+			        columnLengthString = $"{presicion}";
 
+					var scale = string.Empty;
 
-            return $"{typeName}" + (!string.IsNullOrEmpty(columnLengthString) ? columnLengthString : "");
+			        var scaleFromAttr = CustomAttributesHelper.GetSqlUserTypeColumnScale(property);
+			        if (scaleFromAttr.HasValue)
+			        {
+				        scale = scaleFromAttr.Value.ToString(CultureInfo.InvariantCulture);
+			        }
+			        columnLengthString += !string.IsNullOrEmpty(scale) ? $", {scale}" : string.Empty;
+		        }						        
+			}
+
+            return $"{typeName}" + (!string.IsNullOrEmpty(columnLengthString) ? $"({columnLengthString})" : string.Empty);
 
         }
 

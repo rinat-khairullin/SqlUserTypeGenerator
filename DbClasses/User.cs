@@ -12,6 +12,7 @@ namespace DbClasses
     {
 		[JsonIgnore]
 		public long PropLong { get; set; }     
+		[SqlUserTypeColumnProperties(Length = 10)]
         public long? PropLongNull { get; set; }
 	    [JsonIgnore]
 		[SqlUserTypeColumnProperties(Length = 10)]     
@@ -20,9 +21,12 @@ namespace DbClasses
         public bool? PropBoolNull { get; set; }
         public DateTime PropDateTime { get; set; }
         public DateTime? PropDateTimeNull { get; set; }
-        public decimal PropDecimal { get; set; }
-        public decimal? PropDecimalNull { get; set; }
-        public double PropDouble { get; set; }
+	    [SqlUserTypeColumnProperties(Presicion = 7, Scale = 3)]
+		public decimal PropDecimal { get; set; }
+	    [SqlUserTypeColumnProperties(Presicion = 10, Scale = 2)]
+		public decimal? PropDecimalNull { get; set; }
+	    public decimal DefaultPrecisionNumeric { get; set; }
+		public double PropDouble { get; set; }
         public double? PropDoubleNull { get; set; }
         public int PropInt { get; set; }     
         public int? PropIntNull { get; set; }     
@@ -34,7 +38,7 @@ namespace DbClasses
 
     }
 
-	[SqlUserType]
+	//[SqlUserType]
 	public class BaseUser
 	{
 		[SqlUserTypeColumnProperties(Length = 23)]

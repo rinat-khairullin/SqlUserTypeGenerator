@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -8,34 +9,60 @@ namespace SqlUserTypeGenerator
 	{
 		public static CustomAttributeData GetSqlUserTypeAttributeData(Type type)
 		{
-			return type.GetCustomAttributesData()
-				.FirstOrDefault(cad => StringHelper.IsEqualStrings(cad.AttributeType.FullName, typeof(SqlUserTypeAttribute).FullName));
+			return GetCustomAttributeByName(type.GetCustomAttributesData(), typeof(SqlUserTypeAttribute).FullName);			
 		}
 
 		public static int? GetSqlUserTypeColumnLength(PropertyInfo pi)
 		{
-			int? result = null;
-
-			var columnProps = pi.GetCustomAttributesData()
-				.FirstOrDefault(cad => StringHelper.IsEqualStrings(cad.AttributeType.FullName, typeof(SqlUserTypeColumnPropertiesAttribute).FullName));
-
-			if (columnProps?.NamedArguments != null)
-			{
-				var columnLengthPropObject = columnProps.NamedArguments
-					.FirstOrDefault(na => StringHelper.IsEqualStrings(na.MemberName,
-						nameof(SqlUserTypeColumnPropertiesAttribute.Length))).TypedValue.Value;
-				result = Convert.ToInt32(columnLengthPropObject);
-			}
-			return result;
-
+			return AttributeValueGetter(pi, nameof(SqlUserTypeColumnPropertiesAttribute.Length));			
 		}
+
+		public static int? GetSqlUserTypeColumnPresicion(PropertyInfo pi)
+		{
+			return AttributeValueGetter(pi, nameof(SqlUserTypeColumnPropertiesAttribute.Presicion));			
+		}
+
+		public static int? GetSqlUserTypeColumnScale(PropertyInfo pi)
+		{
+			return AttributeValueGetter(pi, nameof(SqlUserTypeColumnPropertiesAttribute.Scale));
+		}
+
+
+		private static Func<PropertyInfo, string, int?> AttributeValueGetter => (propInfo, attrName) =>
+		{
+			var columnProps = GetColumnProperties(propInfo);
+
+			var columnLengthPropObject = GetAttributeArgumentValue(columnProps, attrName);
+
+			return columnLengthPropObject != null ? Convert.ToInt32(columnLengthPropObject) : default(int?);
+		};
+
+		private static CustomAttributeData GetColumnProperties(PropertyInfo pi)
+		{
+			var columnProps = GetCustomAttributeByName(pi.GetCustomAttributesData(),
+				typeof(SqlUserTypeColumnPropertiesAttribute).FullName);
+			return columnProps;
+		}
+
+
+		private static object GetAttributeArgumentValue(CustomAttributeData attr, string argName)
+		{
+			return attr?.NamedArguments?
+				.FirstOrDefault(na => StringHelper.IsEqualStrings(na.MemberName, argName))
+				.TypedValue.Value;
+		}
+
+		private static CustomAttributeData GetCustomAttributeByName(IList<CustomAttributeData> customAttributes, string attrName)
+		{
+			return
+				customAttributes
+				.FirstOrDefault(cad => StringHelper.IsEqualStrings(cad.AttributeType.FullName, attrName));			
+		}
+
 
 		public static string GetTypeName(CustomAttributeData cad)
 		{
-			return cad.NamedArguments?
-				.FirstOrDefault(na => StringHelper.IsEqualStrings(na.MemberName, nameof(SqlUserTypeAttribute.TypeName)))
-				.TypedValue
-				.Value?.ToString();
+			return GetAttributeArgumentValue(cad, nameof(SqlUserTypeAttribute.TypeName))?.ToString();				
 		}
 	}
 }
