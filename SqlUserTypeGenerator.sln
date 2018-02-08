@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DbMigrations", "DbMigration
 		DbMigrations\DbClassesWithCustomSqlFolder\user.sql = DbMigrations\DbClassesWithCustomSqlFolder\user.sql
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlUserTypeGenerator.Tests", "SqlUserTypeGenerator.Tests\SqlUserTypeGenerator.Tests.csproj", "{FEB26F4C-FB03-4119-A751-2807D987371D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{8B7843D0-8FDE-4E87-931A-A493326F3395}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B7843D0-8FDE-4E87-931A-A493326F3395}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B7843D0-8FDE-4E87-931A-A493326F3395}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEB26F4C-FB03-4119-A751-2807D987371D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEB26F4C-FB03-4119-A751-2807D987371D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEB26F4C-FB03-4119-A751-2807D987371D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEB26F4C-FB03-4119-A751-2807D987371D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

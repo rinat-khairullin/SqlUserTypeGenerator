@@ -42,7 +42,7 @@ namespace SqlUserTypeGenerator
             };
         }
 
-        private static string CreateSqlColumnString(PropertyInfo property)
+        internal static string CreateSqlColumnString(PropertyInfo property)
         {
 
             var sqlType = GetSqlType(property);
