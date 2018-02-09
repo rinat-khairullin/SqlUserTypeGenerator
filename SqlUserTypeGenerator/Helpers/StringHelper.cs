@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace SqlUserTypeGenerator
+namespace SqlUserTypeGenerator.Helpers
 {
 	public class StringHelper
 	{

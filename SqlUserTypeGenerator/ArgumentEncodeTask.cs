@@ -1,4 +1,5 @@
 ﻿using Microsoft.Build.Framework;
+using SqlUserTypeGenerator.Helpers;
 
 namespace SqlUserTypeGenerator
 {

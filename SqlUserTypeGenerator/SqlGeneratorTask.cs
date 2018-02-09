@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Microsoft.Build.Framework;
+using SqlUserTypeGenerator.Helpers;
 
 namespace SqlUserTypeGenerator
 {
