@@ -41,12 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArgumentEncodeTask.cs" />
+    <Compile Include="BuildTasks\ArgumentEncodeTask.cs" />
+    <Compile Include="BuildTasks\BuildDestinationFolderTask.cs" />
     <Compile Include="ColumnTextGeneratorFactory.cs" />
     <Compile Include="ColumnTextGenerators\ColumnTextGenerator.cs" />
     <Compile Include="ColumnTextGenerators\DecimalColumnGenerator.cs" />
     <Compile Include="ColumnTextGenerators\NvarcharColumnGenerator.cs" />
-    <Compile Include="BuildDestinationFolderTask.cs" />
     <Compile Include="Helpers\CustomAttributesHelper.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Helpers\TypeHelper.cs" />

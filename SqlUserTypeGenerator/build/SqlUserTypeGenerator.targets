@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<UsingTask TaskName="SqlUserTypeGenerator.ArgumentEncodeTask"
+	<UsingTask TaskName="SqlUserTypeGenerator.BuildTasks.ArgumentEncodeTask"
 	           AssemblyFile="$(TargetDir)SqlUserTypeGenerator.dll"/>
-	<UsingTask TaskName="SqlUserTypeGenerator.BuildDestinationFolderTask"
+	<UsingTask TaskName="SqlUserTypeGenerator.BuildTasks.BuildDestinationFolderTask"
 	           AssemblyFile="$(TargetDir)SqlUserTypeGenerator.dll"/>
 	
 	<Target Name="CustomTarget" AfterTargets="Build" Condition="$(BuildingInsideVisualStudio) != '' OR $(SqlUserTypeGenerator_LocalDbg) != '' ">

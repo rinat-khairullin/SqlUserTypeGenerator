@@ -1,7 +1,7 @@
 ﻿using Microsoft.Build.Framework;
 using SqlUserTypeGenerator.Helpers;
 
-namespace SqlUserTypeGenerator
+namespace SqlUserTypeGenerator.BuildTasks
 {
 	public class ArgumentEncodeTask : ITask
 	{

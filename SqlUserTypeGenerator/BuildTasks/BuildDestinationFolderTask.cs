@@ -1,6 +1,6 @@
 ﻿using Microsoft.Build.Framework;
 
-namespace SqlUserTypeGenerator
+namespace SqlUserTypeGenerator.BuildTasks
 {
     public class BuildDestinationFolderTask : ITask
     {
