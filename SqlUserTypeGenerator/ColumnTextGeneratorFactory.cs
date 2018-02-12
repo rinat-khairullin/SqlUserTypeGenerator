@@ -26,9 +26,9 @@ namespace SqlUserTypeGenerator
 
 		};
 
-		private delegate ColumnTextGenerator GeneratorCreateFunc(PropertyInfo pi);
+		private delegate IColumnTextGenerator GeneratorCreateFunc(PropertyInfo pi);
 
-		public static ColumnTextGenerator CreateGenerator(PropertyInfo pi)
+		public static IColumnTextGenerator CreateGenerator(PropertyInfo pi)
 		{
 			var propertyBaseType = TypeHelper.ExtractNonNullableType(pi);
 			if (Generators.ContainsKey(propertyBaseType))

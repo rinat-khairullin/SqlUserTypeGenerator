@@ -4,17 +4,27 @@ using SqlUserTypeGenerator.Helpers;
 
 namespace SqlUserTypeGenerator.ColumnTextGenerators
 {
-	internal class DecimalColumnGenerator : ColumnTextGenerator
+	internal class DecimalColumnGenerator : IColumnTextGenerator
 	{
-		public DecimalColumnGenerator(string sqlTypeName, PropertyInfo propertyInfo) : base(sqlTypeName, propertyInfo)
+		private readonly string _sqlTypeName;
+		private readonly PropertyInfo _propertyInfo;
+
+		public DecimalColumnGenerator(string sqlTypeName, PropertyInfo propertyInfo)
 		{
+			_sqlTypeName = sqlTypeName;
+			_propertyInfo = propertyInfo;
 		}
 
-		public override string GetColumnType()
+		public string GetColumnName()
+		{
+			return ColumnTextUtils.GetColumnName(_propertyInfo);
+		}
+
+		public string GetColumnType()
 		{
 			var presicion = "18";
 			var columnLengthString = presicion;
-			var precisionFromAttr = CustomAttributesHelper.GetSqlUserTypeColumnPresicion(PropertyInfo);
+			var precisionFromAttr = CustomAttributesHelper.GetSqlUserTypeColumnPresicion(_propertyInfo);
 			if (precisionFromAttr.HasValue)
 			{
 				presicion = precisionFromAttr.Value.ToString(CultureInfo.InvariantCulture);
@@ -22,7 +32,7 @@ namespace SqlUserTypeGenerator.ColumnTextGenerators
 
 				var scale = string.Empty;
 
-				var scaleFromAttr = CustomAttributesHelper.GetSqlUserTypeColumnScale(PropertyInfo);
+				var scaleFromAttr = CustomAttributesHelper.GetSqlUserTypeColumnScale(_propertyInfo);
 				if (scaleFromAttr.HasValue)
 				{
 					scale = scaleFromAttr.Value.ToString(CultureInfo.InvariantCulture);
@@ -30,8 +40,12 @@ namespace SqlUserTypeGenerator.ColumnTextGenerators
 				columnLengthString += !string.IsNullOrEmpty(scale) ? $", {scale}" : string.Empty;
 			}
 
-			return GetColumnTypeString(SqlTypeName, columnLengthString);
+			return ColumnTextUtils.GetColumnTypeString(_sqlTypeName, columnLengthString);
 		}
 
+		public string GetColumnNullability()
+		{
+			return ColumnTextUtils.GetColumnNullability(_propertyInfo.PropertyType);
+		}
 	}
 }

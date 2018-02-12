@@ -45,7 +45,9 @@
     <Compile Include="BuildTasks\BuildDestinationFolderTask.cs" />
     <Compile Include="ColumnTextGeneratorFactory.cs" />
     <Compile Include="ColumnTextGenerators\ColumnTextGenerator.cs" />
+    <Compile Include="ColumnTextGenerators\ColumnTextUtils.cs" />
     <Compile Include="ColumnTextGenerators\DecimalColumnGenerator.cs" />
+    <Compile Include="ColumnTextGenerators\IColumnTextGenerator.cs" />
     <Compile Include="ColumnTextGenerators\NvarcharColumnGenerator.cs" />
     <Compile Include="Helpers\CustomAttributesHelper.cs" />
     <Compile Include="Helpers\StringHelper.cs" />

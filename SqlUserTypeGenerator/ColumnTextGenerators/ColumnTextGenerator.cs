@@ -1,39 +1,32 @@
 ﻿using System.Reflection;
-using SqlUserTypeGenerator.Helpers;
 
 namespace SqlUserTypeGenerator.ColumnTextGenerators
 {
-	internal class ColumnTextGenerator
+	internal class ColumnTextGenerator : IColumnTextGenerator
 	{
-		protected readonly string SqlTypeName;
-		protected readonly PropertyInfo PropertyInfo;
+		private readonly string _sqlTypeName;
+		private readonly PropertyInfo _propertyInfo;
 
 		public ColumnTextGenerator(string sqlTypeName, PropertyInfo propertyInfo)
 		{
-			SqlTypeName = sqlTypeName;
-			PropertyInfo = propertyInfo;
+			_sqlTypeName = sqlTypeName;
+			_propertyInfo = propertyInfo;
 		}
 
 		public string GetColumnName()
 		{
-			return PropertyInfo.Name;
+			return ColumnTextUtils.GetColumnName(_propertyInfo);
 		}
 
 		public virtual string GetColumnType()
 		{
 			var columnLengthString = string.Empty;			
-			return GetColumnTypeString(SqlTypeName, columnLengthString);
-		}
-
-		protected string GetColumnTypeString(string typeName, string columnLengthString)
-		{
-			return $"{typeName}" + (!string.IsNullOrEmpty(columnLengthString) ? $"({columnLengthString})" : string.Empty);
+			return ColumnTextUtils.GetColumnTypeString(_sqlTypeName, columnLengthString);
 		}
 
 		public string GetColumnNullability()
 		{
-			var isNullable = TypeHelper.IsNullableType(PropertyInfo.PropertyType);
-			return isNullable ? "null" : "not null";
-		}
+			return ColumnTextUtils.GetColumnNullability(_propertyInfo.PropertyType);			
+		}		
 	}
 }
