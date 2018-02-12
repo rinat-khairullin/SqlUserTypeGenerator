@@ -8,6 +8,7 @@ namespace SqlUserTypeGenerator
 	    public int Scale { get; set; }
 	    public int Presicion { get; set; }
 		public int Length { get; set; }
+	    public bool Nullable { get; set; }
 
         public const int MaxLength = -1;
     }

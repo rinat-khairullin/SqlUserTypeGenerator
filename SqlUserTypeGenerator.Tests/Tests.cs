@@ -46,7 +46,11 @@ namespace SqlUserTypeGenerator.Tests
 		public Guid? PropGuidNull { get; set; }
 		public byte[] PropByteArray { get; set; }
 		public byte PropByte { get; set; }
-		public byte? PropByteNull { get; set; }		
+		public byte? PropByteNull { get; set; }
+		[SqlUserTypeColumnProperties(Nullable = true)]
+		public string NullableString { get; set; }
+		[SqlUserTypeColumnProperties(Nullable = true, Length = 22)]
+		public string NullableStringWithLength { get; set; }
 	}
 
 
@@ -79,6 +83,8 @@ namespace SqlUserTypeGenerator.Tests
 						{ GetProperty(nameof(SourceClass.PropByteArray)), "PropByteArray varbinary not null" },
 						{ GetProperty(nameof(SourceClass.PropByte)), "PropByte tinyint not null" },
 						{ GetProperty(nameof(SourceClass.PropByteNull)), "PropByteNull tinyint null" },
+						{ GetProperty(nameof(SourceClass.NullableString)), "NullableString nvarchar(50) null" },
+						{ GetProperty(nameof(SourceClass.NullableStringWithLength)), "NullableStringWithLength nvarchar(22) null" },
 					}
 					.Select(kvp => new TestCaseData(kvp.Key, kvp.Value).Returns(true));
 																

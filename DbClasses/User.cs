@@ -32,9 +32,12 @@ namespace DbClasses
         public int? PropIntNull { get; set; }     
         public Guid PropGuid { get; set; }
         public Guid? PropGuidNull { get; set; }
-        public byte[] PropByteArray { get; set; }
+	    [SqlUserTypeColumnProperties(Nullable = true)]
+	    public string NullableString { get; set; }
+		public byte[] PropByteArray { get; set; }
         public byte PropByte { get; set; }
         public byte? PropByteNull { get; set; }
+		
 
     }
 

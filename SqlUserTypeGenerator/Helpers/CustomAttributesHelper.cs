@@ -27,15 +27,30 @@ namespace SqlUserTypeGenerator.Helpers
 			return AttributeValueGetter(pi, nameof(SqlUserTypeColumnPropertiesAttribute.Scale));
 		}
 
+		public static bool? GetSqlUserTypeColumnNullable(PropertyInfo pi)
+		{
+			return BoolAttributeValueGetter(pi, nameof(SqlUserTypeColumnPropertiesAttribute.Nullable));
+		}
 
-		private static Func<PropertyInfo, string, int?> AttributeValueGetter => (propInfo, attrName) =>
+
+		private static int? AttributeValueGetter(PropertyInfo propInfo, string attrName)
 		{
 			var columnProps = GetColumnProperties(propInfo);
 
-			var columnLengthPropObject = GetAttributeArgumentValue(columnProps, attrName);
+			var attrValue = GetAttributeArgumentValue(columnProps, attrName);
 
-			return columnLengthPropObject != null ? Convert.ToInt32(columnLengthPropObject) : default(int?);
-		};
+			return attrValue != null ? Convert.ToInt32(attrValue) : default(int?);
+		}
+
+		private static bool? BoolAttributeValueGetter(PropertyInfo propInfo, string attrName)
+		{
+			var columnProps = GetColumnProperties(propInfo);
+
+			var attrValue = GetAttributeArgumentValue(columnProps, attrName);
+
+			return attrValue != null ? Convert.ToBoolean(attrValue) : default(bool?);
+		}
+
 
 		private static CustomAttributeData GetColumnProperties(PropertyInfo pi)
 		{

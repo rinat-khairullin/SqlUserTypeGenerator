@@ -17,6 +17,7 @@ create type [users] as table (
 	PropIntNull int null,
 	PropGuid uniqueidentifier not null,
 	PropGuidNull uniqueidentifier null,
+	NullableString nvarchar(50) null,
 	PropByteArray varbinary not null,
 	PropByte tinyint not null,
 	PropByteNull tinyint null,

@@ -33,6 +33,11 @@ namespace SqlUserTypeGenerator.ColumnTextGenerators
 
 		public string GetColumnNullability()
 		{
+			var attr = CustomAttributesHelper.GetSqlUserTypeColumnNullable(_propertyInfo);
+			if (attr.HasValue)
+			{
+				return ColumnTextUtils.GetColumnNullability(attr.Value);
+			}
 			return ColumnTextUtils.GetColumnNullability(_propertyInfo.PropertyType);
 		}
 	}
