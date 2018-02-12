@@ -14,22 +14,22 @@ namespace SqlUserTypeGenerator.Helpers
 
 		public static int? GetSqlUserTypeColumnLength(PropertyInfo pi)
 		{
-			return AttributeValueGetter(pi, nameof(SqlUserTypeColumnPropertiesAttribute.Length));			
+			return AttributeValueGetter(pi, nameof(SqlColumnAttribute.Length));			
 		}
 
 		public static int? GetSqlUserTypeColumnPresicion(PropertyInfo pi)
 		{
-			return AttributeValueGetter(pi, nameof(SqlUserTypeColumnPropertiesAttribute.Presicion));			
+			return AttributeValueGetter(pi, nameof(SqlColumnAttribute.Presicion));			
 		}
 
 		public static int? GetSqlUserTypeColumnScale(PropertyInfo pi)
 		{
-			return AttributeValueGetter(pi, nameof(SqlUserTypeColumnPropertiesAttribute.Scale));
+			return AttributeValueGetter(pi, nameof(SqlColumnAttribute.Scale));
 		}
 
 		public static bool? GetSqlUserTypeColumnNullable(PropertyInfo pi)
 		{
-			return BoolAttributeValueGetter(pi, nameof(SqlUserTypeColumnPropertiesAttribute.Nullable));
+			return BoolAttributeValueGetter(pi, nameof(SqlColumnAttribute.Nullable));
 		}
 
 
@@ -55,7 +55,7 @@ namespace SqlUserTypeGenerator.Helpers
 		private static CustomAttributeData GetColumnProperties(PropertyInfo pi)
 		{
 			var columnProps = GetCustomAttributeByName(pi.GetCustomAttributesData(),
-				typeof(SqlUserTypeColumnPropertiesAttribute).FullName);
+				typeof(SqlColumnAttribute).FullName);
 			return columnProps;
 		}
 

@@ -56,7 +56,7 @@
     <Compile Include="SqlGenerator.cs" />
     <Compile Include="SqlGeneratorTask.cs" />
     <Compile Include="SqlUserTypeAttribute.cs" />
-    <Compile Include="SqlUserTypeColumnPropertiesAttribute.cs" />
+    <Compile Include="SqlColumnAttribute.cs" />
     <Compile Include="SqlUserTypeDefinition.cs" />
   </ItemGroup>
   <ItemGroup>

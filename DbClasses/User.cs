@@ -12,18 +12,18 @@ namespace DbClasses
     {
 		[JsonIgnore]
 		public long PropLong { get; set; }     
-		[SqlUserTypeColumnProperties(Length = 10)]
+		[SqlColumn(Length = 10)]
         public long? PropLongNull { get; set; }
 	    [JsonIgnore]
-		[SqlUserTypeColumnProperties(Length = 10)]     
+		[SqlColumn(Length = 10)]     
         public string PropString { get; set; }
         public bool PropBool { get; set; }
         public bool? PropBoolNull { get; set; }
         public DateTime PropDateTime { get; set; }
         public DateTime? PropDateTimeNull { get; set; }
-	    [SqlUserTypeColumnProperties(Presicion = 7, Scale = 3)]
+	    [SqlColumn(Presicion = 7, Scale = 3)]
 		public decimal PropDecimal { get; set; }
-	    [SqlUserTypeColumnProperties(Presicion = 10, Scale = 2)]
+	    [SqlColumn(Presicion = 10, Scale = 2)]
 		public decimal? PropDecimalNull { get; set; }
 	    public decimal DefaultPrecisionNumeric { get; set; }
 		public double PropDouble { get; set; }
@@ -32,7 +32,7 @@ namespace DbClasses
         public int? PropIntNull { get; set; }     
         public Guid PropGuid { get; set; }
         public Guid? PropGuidNull { get; set; }
-	    [SqlUserTypeColumnProperties(Nullable = true)]
+	    [SqlColumn(Nullable = true)]
 	    public string NullableString { get; set; }
 		public byte[] PropByteArray { get; set; }
         public byte PropByte { get; set; }
@@ -44,7 +44,7 @@ namespace DbClasses
 	//[SqlUserType]
 	public class BaseUser
 	{
-		[SqlUserTypeColumnProperties(Length = 23)]
+		[SqlColumn(Length = 23)]
 		public string BaseProp { get; set; }
 	}
 }

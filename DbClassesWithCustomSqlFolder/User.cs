@@ -12,13 +12,13 @@ namespace DbClassesWithCustomSqlFolder
     {
         public long PropLong { get; set; }
         public long? PropLongNull { get; set; }
-		[SqlUserTypeColumnProperties(Length = 42)]
+		[SqlColumn(Length = 42)]
         public string PropString { get; set; }
         public bool PropBool { get; set; }
         public bool? PropBoolNull { get; set; }
         public DateTime PropDateTime { get; set; }
         public DateTime? PropDateTimeNull { get; set; }
-	    [SqlUserTypeColumnProperties(Length = 10)]
+	    [SqlColumn(Length = 10)]
 		public decimal PropDecimal { get; set; }
         public decimal? PropDecimalNull { get; set; }
         public double PropDouble { get; set; }

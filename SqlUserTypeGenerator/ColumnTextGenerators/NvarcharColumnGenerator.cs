@@ -26,7 +26,7 @@ namespace SqlUserTypeGenerator.ColumnTextGenerators
 			var columnLengthFromAttr = CustomAttributesHelper.GetSqlUserTypeColumnLength(_propertyInfo);
 			if (columnLengthFromAttr.HasValue)
 			{
-				columnLengthString = columnLengthFromAttr.Value == SqlUserTypeColumnPropertiesAttribute.MaxLength ? "max" : columnLengthFromAttr.Value.ToString(CultureInfo.InvariantCulture);
+				columnLengthString = columnLengthFromAttr.Value == SqlColumnAttribute.MaxLength ? "max" : columnLengthFromAttr.Value.ToString(CultureInfo.InvariantCulture);
 			}
 			return ColumnTextUtils.GetColumnTypeString(_sqlTypeName, columnLengthString);			
 		}

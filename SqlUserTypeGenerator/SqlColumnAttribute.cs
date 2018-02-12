@@ -3,7 +3,7 @@
 namespace SqlUserTypeGenerator
 {
     [AttributeUsage(AttributeTargets.Property)]
-    public class SqlUserTypeColumnPropertiesAttribute : Attribute
+    public class SqlColumnAttribute : Attribute
     {
 	    public int Scale { get; set; }
 	    public int Presicion { get; set; }
