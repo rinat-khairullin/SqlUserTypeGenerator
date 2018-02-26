@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -51,11 +52,20 @@ namespace SqlUserTypeGenerator.Tests
 		public string NullableString { get; set; }
 		[SqlColumn(Nullable = true, Length = 22)]
 		public string NullableStringWithLength { get; set; }
+
+		public FileAccess EnumTest { get; set; }
+		public FileAccess? NullEnumTest { get; set; }
+
+		public UserEnum UserEnum { get; set; }
+
+		public IUserInterface UserInterface { get; set; }
+		public UserClass UserClass { get; set; }
 	}
 
 
 	public class ColumnsGenerationTestData
 	{
+
 		public static IEnumerable TestCases
 		{
 			get
@@ -85,6 +95,14 @@ namespace SqlUserTypeGenerator.Tests
 						{ GetProperty(nameof(SourceClass.PropByteNull)), "PropByteNull tinyint null" },
 						{ GetProperty(nameof(SourceClass.NullableString)), "NullableString nvarchar(50) null" },
 						{ GetProperty(nameof(SourceClass.NullableStringWithLength)), "NullableStringWithLength nvarchar(22) null" },
+
+						{ GetProperty(nameof(SourceClass.EnumTest)), "EnumTest int not null" },
+						{ GetProperty(nameof(SourceClass.NullEnumTest)), "NullEnumTest int null" },
+						{ GetProperty(nameof(SourceClass.UserEnum)), "UserEnum int not null" },
+
+						{ GetProperty(nameof(SourceClass.UserClass)), string.Empty },
+						{ GetProperty(nameof(SourceClass.UserInterface)), string.Empty },
+
 					}
 					.Select(kvp => new TestCaseData(kvp.Key, kvp.Value).Returns(true));
 																

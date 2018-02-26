@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using SqlUserTypeGenerator.Helpers;
 
@@ -14,11 +15,11 @@ namespace SqlUserTypeGenerator
         {
             var cols = type.GetProperties();
 
-            List<string> sqlColumns = new List<string>();
-            foreach (var c in cols)
-            {
-                sqlColumns.Add(CreateSqlColumnString(c));
-            }
+            IList<string> sqlColumns = cols
+				.Select(CreateSqlColumnString)
+				.Where(s => !string.IsNullOrEmpty(s))
+				.ToList()
+				;
 				        
 	        var typeNameFromAttr = CustomAttributesHelper.GetTypeName(sqlUserTypeAttributeData);	        			
 
@@ -33,7 +34,7 @@ namespace SqlUserTypeGenerator
         {
                         
 	        var gen = ColumnTextGeneratorFactory.CreateGenerator(property);
-            return $"{gen.GetColumnName()} {gen.GetColumnType()} {gen.GetColumnNullability()}";
+	        return gen != null ? $"{gen.GetColumnName()} {gen.GetColumnType()} {gen.GetColumnNullability()}" : string.Empty;            
         }
 
     }

@@ -21,9 +21,7 @@ namespace SqlUserTypeGenerator
 			{ typeof(Int32), (info) =>  new ColumnTextGenerator("int", info) } ,
 			{ typeof(Guid), (info) =>  new ColumnTextGenerator("uniqueidentifier", info) } ,
 			{ typeof(Byte[]), (info) =>  new ColumnTextGenerator("varbinary", info) } ,
-			{ typeof(Byte), (info) =>  new ColumnTextGenerator("tinyint", info) } ,
-
-
+			{ typeof(Byte), (info) =>  new ColumnTextGenerator("tinyint", info) } ,			
 		};
 
 		private delegate IColumnTextGenerator GeneratorCreateFunc(PropertyInfo pi);
@@ -31,14 +29,21 @@ namespace SqlUserTypeGenerator
 		public static IColumnTextGenerator CreateGenerator(PropertyInfo pi)
 		{
 			var propertyBaseType = TypeHelper.ExtractNonNullableType(pi);
-			if (Generators.ContainsKey(propertyBaseType))
+
+			var sourceType = propertyBaseType;
+
+			if (propertyBaseType.IsEnum)
 			{
-				return Generators[propertyBaseType](pi);
+				sourceType = typeof(Int32); //Enum.GetUnderlyingType(propertyBaseType);
+			}					
+
+			if (Generators.ContainsKey(sourceType))
+			{
+				return Generators[sourceType](pi);
 			}
 			else
 			{
-				//todo - log error
-				throw new NotImplementedException($"generator for {pi.PropertyType.FullName} {pi.Name} not implemented");
+				return null;
 			}
 		}
 
