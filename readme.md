@@ -50,6 +50,10 @@ Install-Package SqlUserTypeGenerator
 | Guid | uniqueidentifier |
 | Byte[] | varbinary |
 | Byte | tinyint |
+| Enum | int |
+
+Complex types (classes and interfaces) are ignored
+
 
 ### Column properties
 Use ```SqlColumnAttribute``` to define column properties (length and nullability for ```nvarchar```,  ```precision``` and ```scale``` for numeric):
