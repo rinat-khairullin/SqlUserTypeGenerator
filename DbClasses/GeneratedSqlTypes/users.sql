@@ -20,7 +20,7 @@ create type [users] as table (
 	NullableString nvarchar(50) null,
 	PropByteArray varbinary not null,
 	PropByte tinyint not null,
-	PropByteNull tinyint null,
+	PropByteNull22 tinyint null,
 	BaseProp nvarchar(23) not null
 )
 go
