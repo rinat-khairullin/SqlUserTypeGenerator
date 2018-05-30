@@ -8,6 +8,10 @@
 		TaskName="SqlUserTypeGenerator.BuildTasks.BuildDestinationFolderTask"
 		AssemblyFile="$(TargetDir)SqlUserTypeGenerator.dll"
 	/>
+	<UsingTask
+		TaskName="SqlUserTypeGenerator.BuildTasks.BuildDefaultValueTask"
+		AssemblyFile="$(TargetDir)SqlUserTypeGenerator.dll"
+	/>
 
 	<Target Name="CustomTarget" AfterTargets="Build" Condition="$(BuildingInsideVisualStudio) != '' OR $(SqlUserTypeGenerator_LocalDbg) != '' ">
 

@@ -17,6 +17,7 @@ namespace DbClassesWithCustomSqlFolder
         public bool PropBool { get; set; }
         public bool? PropBoolNull { get; set; }
         public DateTime PropDateTime { get; set; }
+        public DateTime PropDateTime2 { get; set; }
         public DateTime? PropDateTimeNull { get; set; }
 	    [SqlColumn(Length = 10)]
 		public decimal PropDecimal { get; set; }
