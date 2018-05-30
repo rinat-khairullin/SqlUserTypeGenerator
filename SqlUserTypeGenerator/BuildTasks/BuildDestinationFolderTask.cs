@@ -2,16 +2,16 @@
 
 namespace SqlUserTypeGenerator.BuildTasks
 {
-    public class BuildDestinationFolderTask : ITask
-    {
-	    public IBuildEngine BuildEngine { get; set; }
-	    public ITaskHost HostObject { get; set; }
+	public class BuildDestinationFolderTask : ITask
+	{
+		public IBuildEngine BuildEngine { get; set; }
+		public ITaskHost HostObject { get; set; }
 
 		[Output]
 		public string Path { get; set; }
-		
-	    public string Value { get; set; }
-	    public string ProjectDir { get; set; }
+
+		public string Value { get; set; }
+		public string ProjectDir { get; set; }
 
 		public bool Execute()
 		{
@@ -21,8 +21,8 @@ namespace SqlUserTypeGenerator.BuildTasks
 				var trimmed = Value.TrimEnd('\\');
 				Path = System.IO.Path.GetFullPath(trimmed);
 			}
-			
+
 			return true;
 		}
-    }
+	}
 }

@@ -91,6 +91,6 @@ create type [t_example] as table (
 
 * Output folder for generated files can be customized by setting `SqlUserTypeGenerator_TargetFolder` property in csproj file.
 * Type pre-create and post-create code can be set via `SqlUserTypeGenerator_TypePreCreateCode` and  `SqlUserTypeGenerator_TypePostCreateCode` properties; `$typename$` string in this code will replaced to generated type name.
-* Property of `DateTime` type is generating as `datetime2` sql-type. This can be customized by setting `SqlUserTypeGenerator_UseSqlDatetime2` property in csproj file.
+* Property of `DateTime` type is generating as `datetime2` sql-type. This can be customized by setting `SqlUserTypeGenerator_UseSqlDatetime2` property to `false` in csproj file.
 
 (see file `tools\SqlUserTypeGenerator_GlobalProps.props` file in sample DbClassesWithCustomSqlFolder project)

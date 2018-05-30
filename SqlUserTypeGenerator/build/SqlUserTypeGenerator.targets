@@ -14,7 +14,6 @@
 	/>
 
 	<Target Name="CustomTarget" AfterTargets="Build" Condition="$(BuildingInsideVisualStudio) != '' OR $(SqlUserTypeGenerator_LocalDbg) != '' ">
-
 		<ArgumentEncodeTask Value="$(SqlUserTypeGenerator_TypePreCreateCode)">
 			<Output TaskParameter="EncodedArgument" PropertyName="EncodedTypePreCreateCode" />
 		</ArgumentEncodeTask>
@@ -24,7 +23,6 @@
 		<BuildDestinationFolderTask Value="$(SqlUserTypeGenerator_TargetFolder)" ProjectDir="$(ProjectDir)">
 			<Output TaskParameter="Path" PropertyName="DestinationFolder" />
 		</BuildDestinationFolderTask>
-
 		<BuildDefaultValueTask InputValue="$(SqlUserTypeGenerator_UseSqlDatetime2)" DefaultValue="true">
 			<Output TaskParameter="Result" PropertyName="UseSqlDatetime2" />
 		</BuildDefaultValueTask>
