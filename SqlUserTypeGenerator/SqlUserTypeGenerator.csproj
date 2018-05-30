@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuildTasks\ArgumentEncodeTask.cs" />
+    <Compile Include="BuildTasks\BuildDefaultValueTask.cs" />
     <Compile Include="BuildTasks\BuildDestinationFolderTask.cs" />
     <Compile Include="ColumnTextGeneratorFactory.cs" />
     <Compile Include="ColumnTextGenerators\ColumnTextGenerator.cs" />

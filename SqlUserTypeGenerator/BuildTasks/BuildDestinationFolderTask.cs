@@ -24,7 +24,5 @@ namespace SqlUserTypeGenerator.BuildTasks
 			
 			return true;
 		}
-
-	    
     }
 }

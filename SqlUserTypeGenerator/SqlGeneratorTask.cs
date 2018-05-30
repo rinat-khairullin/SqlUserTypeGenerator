@@ -14,10 +14,14 @@ namespace SqlUserTypeGenerator
 	    private readonly string _newLine = Environment.NewLine;
 
 	    public string SourceAssemblyPath { get; set; }
+		
 		//absolute path to generated files
 	    public string DestinationFolder { get; set; }
 
-	    public string EncodedTypePreCreateCode { get; set; }
+		// generate user type settings
+		public bool UseSqlDateTime2 { get; set; }
+
+		public string EncodedTypePreCreateCode { get; set; }
 	    public string EncodedTypePostCreateCode { get; set; }
 
 		public IBuildEngine BuildEngine { get; set; }
@@ -42,9 +46,14 @@ namespace SqlUserTypeGenerator
 			var types = GetTypesWithSqlTypeAttribute(assembly);
 
 			var headerText = GetHeaderText();
+			var generateUserTypeSettings = new GenerateUserTypeSettings
+			{
+				UseSqlDateTime2 = UseSqlDateTime2,
+			};
+
 			foreach (var type in types)
 			{
-				var generatedType = SqlGenerator.GenerateUserType(type.UserType, type.SqlUserTypeAttributeData);
+				var generatedType = SqlGenerator.GenerateUserType(type.UserType, type.SqlUserTypeAttributeData, generateUserTypeSettings);
 
 				var generatedSql = BuildSqlText(generatedType);
 

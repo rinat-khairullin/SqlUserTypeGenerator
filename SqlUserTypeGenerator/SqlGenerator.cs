@@ -1,25 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using SqlUserTypeGenerator.Helpers;
 
 namespace SqlUserTypeGenerator
 {
-    public class SqlGenerator
+	public class SqlGenerator
     {
-
-
-		internal static SqlUserTypeDefinition GenerateUserType(Type type, CustomAttributeData sqlUserTypeAttributeData)
+		internal static SqlUserTypeDefinition GenerateUserType(Type type, CustomAttributeData sqlUserTypeAttributeData, GenerateUserTypeSettings settings)
         {
             var cols = type.GetProperties();
 
             IList<string> sqlColumns = cols
-				.Select(CreateSqlColumnString)
+				.Select(i => CreateSqlColumnString(i, settings))
 				.Where(s => !string.IsNullOrEmpty(s))
-				.ToList()
-				;
+				.ToList();
 				        
 	        var typeNameFromAttr = CustomAttributesHelper.GetTypeName(sqlUserTypeAttributeData);	        			
 
@@ -30,12 +26,15 @@ namespace SqlUserTypeGenerator
             };
         }
 
-        internal static string CreateSqlColumnString(PropertyInfo property)
+        internal static string CreateSqlColumnString(PropertyInfo property, GenerateUserTypeSettings settings)
         {
-                        
-	        var gen = ColumnTextGeneratorFactory.CreateGenerator(property);
+	        var gen = ColumnTextGeneratorFactory.CreateGenerator(property, settings);
 	        return gen != null ? $"{gen.GetColumnName()} {gen.GetColumnType()} {gen.GetColumnNullability()}" : string.Empty;            
         }
-
     }
+
+	public class GenerateUserTypeSettings
+	{
+		public bool UseSqlDateTime2 { get; set; } = true;
+	}
 }

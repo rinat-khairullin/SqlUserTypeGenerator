@@ -8,25 +8,24 @@ namespace SqlUserTypeGenerator
 {
 	internal class ColumnTextGeneratorFactory
 	{
+		private delegate IColumnTextGenerator GeneratorCreateFunc(PropertyInfo pi, GenerateUserTypeSettings settings);
 
 		private static readonly Dictionary<Type, GeneratorCreateFunc> Generators = new Dictionary<Type, GeneratorCreateFunc>()
 		{
 			//todo - get rid of "new" operator, use currying
-			{ typeof(Int64), (info) =>  new ColumnTextGenerator("bigint", info) },
-			{ typeof(string), (info) =>  new NvarcharColumnGenerator("nvarchar", info) },
-			{ typeof(decimal), (info) =>  new DecimalColumnGenerator("numeric", info) },
-			{ typeof(Boolean), (info) =>  new ColumnTextGenerator("bit", info) } ,
-			{ typeof(DateTime), (info) =>  new ColumnTextGenerator("datetime", info) } ,
-			{ typeof(Double), (info) =>  new ColumnTextGenerator("float", info) } ,
-			{ typeof(Int32), (info) =>  new ColumnTextGenerator("int", info) } ,
-			{ typeof(Guid), (info) =>  new ColumnTextGenerator("uniqueidentifier", info) } ,
-			{ typeof(Byte[]), (info) =>  new ColumnTextGenerator("varbinary", info) } ,
-			{ typeof(Byte), (info) =>  new ColumnTextGenerator("tinyint", info) } ,			
+			{typeof(long), (info, settings) => new ColumnTextGenerator("bigint", info)},
+			{typeof(string), (info, settings) => new NvarcharColumnGenerator("nvarchar", info)},
+			{typeof(decimal), (info, settings) => new DecimalColumnGenerator("numeric", info)},
+			{typeof(bool), (info, settings) => new ColumnTextGenerator("bit", info)},
+			{typeof(DateTime), (info, settings) => new ColumnTextGenerator(settings.UseSqlDateTime2 ? "datetime2" : "datetime", info)},
+			{typeof(double), (info, settings) => new ColumnTextGenerator("float", info)},
+			{typeof(int), (info, settings) => new ColumnTextGenerator("int", info)},
+			{typeof(Guid), (info, settings) => new ColumnTextGenerator("uniqueidentifier", info)},
+			{typeof(byte[]), (info, settings) => new ColumnTextGenerator("varbinary", info)},
+			{typeof(byte), (info, settings) => new ColumnTextGenerator("tinyint", info)},
 		};
 
-		private delegate IColumnTextGenerator GeneratorCreateFunc(PropertyInfo pi);
-
-		public static IColumnTextGenerator CreateGenerator(PropertyInfo pi)
+		public static IColumnTextGenerator CreateGenerator(PropertyInfo pi, GenerateUserTypeSettings settings)
 		{
 			var propertyBaseType = TypeHelper.ExtractNonNullableType(pi);
 
@@ -34,12 +33,12 @@ namespace SqlUserTypeGenerator
 
 			if (propertyBaseType.IsEnum)
 			{
-				sourceType = typeof(Int32); //Enum.GetUnderlyingType(propertyBaseType);
-			}					
+				sourceType = typeof(int); //!_!Enum.GetUnderlyingType(propertyBaseType);
+			}
 
 			if (Generators.ContainsKey(sourceType))
 			{
-				return Generators[sourceType](pi);
+				return Generators[sourceType](pi, settings);
 			}
 			else
 			{

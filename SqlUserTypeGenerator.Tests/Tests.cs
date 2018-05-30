@@ -9,16 +9,14 @@ using NUnit.Framework;
 
 namespace SqlUserTypeGenerator.Tests
 {
-	
 	public class Tests
 	{
 		[Test]
 		[TestCaseSource(typeof(ColumnsGenerationTestData), nameof(ColumnsGenerationTestData.TestCases))]
 		public bool ColumnsGenerationTest(PropertyInfo pi, string sqlString)
 		{
-			return string.Compare(sqlString, SqlGenerator.CreateSqlColumnString(pi), StringComparison.InvariantCulture) == 0;			
+			return string.Compare(sqlString, SqlGenerator.CreateSqlColumnString(pi, new GenerateUserTypeSettings()), StringComparison.InvariantCulture) == 0;			
 		}
-
 	}
 
 	public class SourceClass
@@ -79,8 +77,8 @@ namespace SqlUserTypeGenerator.Tests
 						{ GetProperty(nameof(SourceClass.PropStringMaxLength)), "PropStringMaxLength nvarchar(max) not null" },
 						{ GetProperty(nameof(SourceClass.PropBool)), "PropBool bit not null" },
 						{ GetProperty(nameof(SourceClass.PropBoolNull)), "PropBoolNull bit null" },
-						{ GetProperty(nameof(SourceClass.PropDateTime)), "PropDateTime datetime not null" },
-						{ GetProperty(nameof(SourceClass.PropDateTimeNull)), "PropDateTimeNull datetime null" },
+						{ GetProperty(nameof(SourceClass.PropDateTime)), "PropDateTime datetime2 not null" },
+						{ GetProperty(nameof(SourceClass.PropDateTimeNull)), "PropDateTimeNull datetime2 null" },
 						{ GetProperty(nameof(SourceClass.PropDecimal)), "PropDecimal numeric(7, 3) not null" },
 						{ GetProperty(nameof(SourceClass.PropDecimalNull)), "PropDecimalNull numeric(10, 2) null" },
 						{ GetProperty(nameof(SourceClass.DefaultPrecisionNumeric)), "DefaultPrecisionNumeric numeric(18) not null" },

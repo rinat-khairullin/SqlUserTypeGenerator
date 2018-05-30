@@ -23,7 +23,7 @@ following file will be generated
 create type [t_users] as table (
 	Id int not null,
 	Name nvarchar(50) not null,
-	DateOfBirth datetime null
+	DateOfBirth datetime2 null
 )
 go
 
@@ -33,59 +33,64 @@ go
 ```
 Install-Package SqlUserTypeGenerator
 ```
-2. add ```SqlUserType``` attribute with optional sql type name to class
+2. add `SqlUserType` attribute with optional sql type name to class
 
 3. build project; new file with sql type definition will be generated to GeneratedSqlTypes folder in project folder
 
 ### Types mapping
-| .NET type| SQL type|
-|-------|--------|
-| Int64 | bigint |
-| string | nvarchar |
-| Boolean | bit |
-| DateTime | datetime |
-| Double | float |
-| Int32 | int |
-| Decimal | numeric |
-| Guid | uniqueidentifier |
-| Byte[] | varbinary |
-| Byte | tinyint |
-| Enum | int |
+
+| .NET type | SQL type           | Note                         |
+|-----------|--------------------|------------------------------|
+| Int64     | `bigint`           |                              |
+| string    | `nvarchar`         |                              |
+| Boolean   | `bit`              |                              |
+| DateTime  | `datetime2`        | Can be tweaked to `datetime` |
+| Double    | `float`            |                              |
+| Int32     | `int`              |                              |
+| Decimal   | `numeric`          |                              |
+| Guid      | `uniqueidentifier` |                              |
+| Byte[]    | `varbinary`        |                              |
+| Byte      | `tinyint`          |                              |
+| Enum      | `int`              |                              |
 
 Complex types (classes and interfaces) are ignored
 
-
 ### Column properties
-Use ```SqlColumnAttribute``` to define column properties (length and nullability for ```nvarchar```,  ```precision``` and ```scale``` for numeric):
+
+Use `SqlColumnAttribute` to define column properties (length and nullability for `nvarchar`,  `precision` and `scale` for numeric):
+
 ```csharp
 [SqlUserType(TypeName = "t_example")]
 public class Example
 {
 	[SqlColumn(Length = 42)]
-	public string NotNullString { get; set; }
+	public string NotNullStringField { get; set; }
 	[SqlColumn(Length = 10, Nullable = true)]
-	public string NullString { get; set; }
+	public string NullStringField { get; set; }
 	 // string with max length
 	[SqlColumn(Length = SqlColumnAttribute.MaxLength)]
-	public string StringMax { get; set; }
+	public string StringMaxField { get; set; }
 	[SqlColumn(Presicion = 7, Scale = 3)]
-	public decimal Decimal { get; set; }
+	public decimal DecimalField { get; set; }
+	[SqlColumn]
+	public DateTime DateTimeField { get; set; }
 }
-
 ```
+
 ```sql
 create type [t_example] as table ( 
-	NotNullString nvarchar(42) not null,
-	NullString nvarchar(10) null,
-	StringMax nvarchar(max) not null,
-	Decimal numeric(7, 3) not null
+	NotNullStringField nvarchar(42) not null,
+	NullStringField nvarchar(10) null,
+	StringMaxField nvarchar(max) not null,
+	DecimalField numeric(7, 3) not null,
+	DateTimeField datetime2 not null
 )
 ```
 
-
 ### Notes
 
-* Output folder for generated files can be customized by setting ```SqlUserTypeGenerator_TargetFolder``` property in csproj file
-* Type pre-create and post-create code can be set via ```SqlUserTypeGenerator_TypePreCreateCode``` and  ```SqlUserTypeGenerator_TypePostCreateCode``` properties; ```$typename$``` string in this code will replaced to generated type name
+* Output folder for generated files can be customized by setting `SqlUserTypeGenerator_TargetFolder` property in csproj file.
+* Type pre-create and post-create code can be set via `SqlUserTypeGenerator_TypePreCreateCode` and  `SqlUserTypeGenerator_TypePostCreateCode` properties; `$typename$` string in this code will replaced to generated type name.
+* Property of `DateTime` type is generating as `datetime2` sql-type. This can be customized by setting `SqlUserTypeGenerator_UseSqlDatetime2` property in csproj file.
 
-(see file tools\SqlUserTypeGenerator_GlobalProps.props file in sample DbClassesWithCustomSqlFolder project)
+(see file `tools\SqlUserTypeGenerator_GlobalProps.props` file in sample DbClassesWithCustomSqlFolder project)
