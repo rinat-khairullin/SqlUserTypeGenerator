@@ -6,3 +6,4 @@ packages
 SqlUserTypeGenerator/run-push.bat
 SqlUserTypeGenerator/*.nupkg
 DbClasses/run-test-pkg-local.bat
+.vs
