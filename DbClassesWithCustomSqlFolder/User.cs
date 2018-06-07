@@ -3,7 +3,7 @@ using SqlUserTypeGenerator;
 
 namespace DbClassesWithCustomSqlFolder
 {
-	[SqlUserType(TypeName = "user")]
+	[SqlUserType(TypeName = "t_DbClassesWithCustomSqlFolder_user")]
 	public class User
 	{
 		public long PropLong { get; set; }

@@ -8,7 +8,6 @@
 		<SqlGeneratorTask
 			SourceAssemblyPath="$(SourceAssemblyPath)"
 			DestinationFolder="$(DestinationFolder)"
-			UseSqlDatetime2="$(UseSqlDatetime2)"
 			EncodedTypePreCreateCode="$(EncodedTypePreCreateCode)"
 			EncodedTypePostCreateCode="$(EncodedTypePostCreateCode)"
 		/>

@@ -17,9 +17,6 @@ go
 print '$typename$ type re-created'
 ]]>
 			</SqlUserTypeGenerator_TypePostCreateCode>
-
-			<!-- to generate "DateTime" type as "datetime" sql-type - use following tweak -->
-			<!--<SqlUserTypeGenerator_UseSqlDatetime2>false</SqlUserTypeGenerator_UseSqlDatetime2>--> 
 		</PropertyGroup>
 	</Target>
 </Project>

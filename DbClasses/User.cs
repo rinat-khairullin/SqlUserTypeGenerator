@@ -3,10 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 using SqlUserTypeGenerator;
 
-
 namespace DbClasses
 {
-    [SqlUserType(TypeName = "users")]
+    [SqlUserType(TypeName = "t_DbClasses_user")]
 	[Table("test")]
     public class User : BaseUser
     {
@@ -37,6 +36,5 @@ namespace DbClasses
 		public byte[] PropByteArray { get; set; }
         public byte PropByte { get; set; }
         public byte? PropByteNull22 { get; set; }
-		
     }
 }

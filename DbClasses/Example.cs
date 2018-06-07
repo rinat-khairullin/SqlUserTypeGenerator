@@ -1,4 +1,5 @@
-﻿using SqlUserTypeGenerator;
+﻿using System;
+using SqlUserTypeGenerator;
 
 namespace DbClasses
 {
@@ -14,9 +15,9 @@ namespace DbClasses
 		public string StringMax { get; set; }
 		[SqlColumn(Presicion = 7, Scale = 3)]
 		public decimal Decimal { get; set; }
-		[SqlDateColumn(SqlDateType.DateTime)]
+		[SqlDateColumn(DateType = SqlDateType.DateTime)]
 		public DateTime ExplicitDateTime { get; set; }
-		[SqlDateColumn(SqlDateType.DateTime2)]
+		[SqlDateColumn(DateType = SqlDateType.DateTime2)]
 		public DateTime ExplicitDateTime2 { get; set; }
 	}
 }

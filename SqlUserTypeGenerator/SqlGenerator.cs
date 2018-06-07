@@ -35,6 +35,5 @@ namespace SqlUserTypeGenerator
 
 	public class GenerateUserTypeSettings
 	{
-		public bool UseSqlDateTime2 { get; set; } = true;
 	}
 }

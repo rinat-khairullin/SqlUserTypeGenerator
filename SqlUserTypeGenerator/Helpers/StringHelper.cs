@@ -20,5 +20,14 @@ namespace SqlUserTypeGenerator.Helpers
 			return !string.IsNullOrEmpty(arg) ? Encoding.UTF8.GetString(Convert.FromBase64String(arg)) : null;
 		}
 
+		public static bool CustomParseBool(string boolString)
+		{
+			int i;
+			if (int.TryParse(boolString, out i))
+			{
+				return Convert.ToBoolean(i);
+			}
+			return Convert.ToBoolean(boolString);
+		}
 	}
 }

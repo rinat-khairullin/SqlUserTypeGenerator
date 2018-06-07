@@ -4,6 +4,8 @@ create type [t_example] as table (
 	NotNullString nvarchar(42) not null,
 	NullString nvarchar(10) null,
 	StringMax nvarchar(max) not null,
-	Decimal numeric(7, 3) not null
+	Decimal numeric(7, 3) not null,
+	ExplicitDateTime datetime not null,
+	ExplicitDateTime2 datetime2 not null
 )
 go

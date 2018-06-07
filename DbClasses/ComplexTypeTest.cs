@@ -12,6 +12,5 @@ namespace DbClasses
 		public IList<int> List { get; set; }
 		public FileAccess Enum { get; set; }
 		public FileAccess? NullEnum { get; set; }
-
 	}
 }

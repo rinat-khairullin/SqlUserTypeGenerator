@@ -2,8 +2,8 @@
 {
 	public enum SqlDateType
 	{
-		DateTime,
-		DateTime2,
-		Date,
+		DateTime = 0,
+		DateTime2 = 1,
+		Date = 2,
 	}
 }

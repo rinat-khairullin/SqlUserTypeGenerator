@@ -23,7 +23,7 @@ following file will be generated
 create type [t_users] as table (
 	Id int not null,
 	Name nvarchar(50) not null,
-	DateOfBirth datetime2 null
+	DateOfBirth datetime null
 )
 go
 
@@ -39,19 +39,19 @@ Install-Package SqlUserTypeGenerator
 
 ### Types mapping
 
-| .NET type | SQL type           | Note                                   |
-|-----------|--------------------|----------------------------------------|
-| Int64     | `bigint`           |                                        |
-| string    | `nvarchar`         |                                        |
-| Boolean   | `bit`              |                                        |
-| DateTime  | `datetime2`        | Can be tweaked to `datetime` or `date` |
-| Double    | `float`            |                                        |
-| Int32     | `int`              |                                        |
-| Decimal   | `numeric`          |                                        |
-| Guid      | `uniqueidentifier` |                                        |
-| Byte[]    | `varbinary`        |                                        |
-| Byte      | `tinyint`          |                                        |
-| Enum      | `int`              |                                        |
+| .NET type | SQL type           | Note                                    |
+|-----------|--------------------|-----------------------------------------|
+| Int64     | `bigint`           |                                         |
+| string    | `nvarchar`         |                                         |
+| Boolean   | `bit`              |                                         |
+| DateTime  | `datetime`         | Can be tweaked to `datetime2` or `date` |
+| Double    | `float`            |                                         |
+| Int32     | `int`              |                                         |
+| Decimal   | `numeric`          |                                         |
+| Guid      | `uniqueidentifier` |                                         |
+| Byte[]    | `varbinary`        |                                         |
+| Byte      | `tinyint`          |                                         |
+| Enum      | `int`              |                                         |
 
 Complex types (classes and interfaces) are ignored
 
@@ -96,6 +96,5 @@ create type [t_example] as table (
 
 * Output folder for generated files can be customized by setting `SqlUserTypeGenerator_TargetFolder` property in csproj file.
 * Type pre-create and post-create code can be set via `SqlUserTypeGenerator_TypePreCreateCode` and  `SqlUserTypeGenerator_TypePostCreateCode` properties; `$typename$` string in this code will replaced to generated type name.
-* Property of `DateTime` type is generating as `datetime2` sql-type. This can be customized by setting `SqlUserTypeGenerator_UseSqlDatetime2` property to `false` in csproj file.
 
 (see file `tools\SqlUserTypeGenerator_GlobalProps.props` file in sample DbClassesWithCustomSqlFolder project)

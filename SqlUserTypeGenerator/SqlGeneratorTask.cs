@@ -18,9 +18,6 @@ namespace SqlUserTypeGenerator
 		//absolute path to generated files
 		public string DestinationFolder { get; set; }
 
-		// generate user type settings
-		public string UseSqlDateTime2 { get; set; }
-
 		public string EncodedTypePreCreateCode { get; set; }
 		public string EncodedTypePostCreateCode { get; set; }
 
@@ -46,10 +43,7 @@ namespace SqlUserTypeGenerator
 			var types = GetTypesWithSqlTypeAttribute(assembly);
 
 			var headerText = GetHeaderText();
-			var generateUserTypeSettings = new GenerateUserTypeSettings
-			{
-				UseSqlDateTime2 = CustomParseBool(UseSqlDateTime2),
-			};
+			var generateUserTypeSettings = new GenerateUserTypeSettings();
 
 			foreach (var type in types)
 			{
@@ -134,16 +128,6 @@ namespace SqlUserTypeGenerator
 		private string GetSafeFilename(string filename)
 		{
 			return string.Join("", filename.Split(Path.GetInvalidFileNameChars()));
-		}
-
-		private bool CustomParseBool(string boolString)
-		{
-			int i;
-			if(int.TryParse(boolString, out i))
-			{
-				return Convert.ToBoolean(i);
-			}
-			return Convert.ToBoolean(boolString);
 		}
 	}
 }

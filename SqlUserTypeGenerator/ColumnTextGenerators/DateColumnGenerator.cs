@@ -37,7 +37,7 @@ namespace SqlUserTypeGenerator.ColumnTextGenerators
 					sqlTypeName = "date";
 					break;
 				case null:
-					sqlTypeName = _settings.UseSqlDateTime2 ? "datetime2" : "datetime";
+					sqlTypeName = "datetime";
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(sqlDateType));
