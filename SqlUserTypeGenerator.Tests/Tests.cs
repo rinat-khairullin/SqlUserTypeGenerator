@@ -92,8 +92,8 @@ namespace SqlUserTypeGenerator.Tests
 						{GetProperty(nameof(SourceClass.PropBool)), "PropBool bit not null"},
 						{GetProperty(nameof(SourceClass.PropBoolNull)), "PropBoolNull bit null"},
 
-						{GetProperty(nameof(SourceClass.PropDateTime)), "PropDateTime datetime2 not null"},
-						{GetProperty(nameof(SourceClass.PropDateTimeNull)), "PropDateTimeNull datetime2 null"},
+						{GetProperty(nameof(SourceClass.PropDateTime)), "PropDateTime datetime not null"},
+						{GetProperty(nameof(SourceClass.PropDateTimeNull)), "PropDateTimeNull datetime null"},
 
 						{GetProperty(nameof(SourceClass.PropExplicitDateTime)), "PropExplicitDateTime datetime not null"},
 						{GetProperty(nameof(SourceClass.PropExplicitDateTime2)), "PropExplicitDateTime2 datetime2 not null"},
