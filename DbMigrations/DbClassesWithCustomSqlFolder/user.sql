@@ -13,6 +13,9 @@ create type [user] as table (
 	PropDateTime datetime2 not null,
 	PropDateTime2 datetime2 not null,
 	PropDateTimeNull datetime2 null,
+	ExplicitPropDateTime datetime not null,
+	ExplicitPropDateTime2 datetime2 not null,
+	ExplicitPropDate date not null,
 	PropDecimal numeric(18) not null,
 	PropDecimalNull numeric(18) null,
 	PropDouble float not null,
@@ -27,4 +30,4 @@ create type [user] as table (
 )
 go
 
-print 'user type re-created'		
+print 'user type re-created'

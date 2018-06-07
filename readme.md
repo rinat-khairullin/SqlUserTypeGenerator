@@ -39,41 +39,45 @@ Install-Package SqlUserTypeGenerator
 
 ### Types mapping
 
-| .NET type | SQL type           | Note                         |
-|-----------|--------------------|------------------------------|
-| Int64     | `bigint`           |                              |
-| string    | `nvarchar`         |                              |
-| Boolean   | `bit`              |                              |
-| DateTime  | `datetime2`        | Can be tweaked to `datetime` |
-| Double    | `float`            |                              |
-| Int32     | `int`              |                              |
-| Decimal   | `numeric`          |                              |
-| Guid      | `uniqueidentifier` |                              |
-| Byte[]    | `varbinary`        |                              |
-| Byte      | `tinyint`          |                              |
-| Enum      | `int`              |                              |
+| .NET type | SQL type           | Note                                   |
+|-----------|--------------------|----------------------------------------|
+| Int64     | `bigint`           |                                        |
+| string    | `nvarchar`         |                                        |
+| Boolean   | `bit`              |                                        |
+| DateTime  | `datetime2`        | Can be tweaked to `datetime` or `date` |
+| Double    | `float`            |                                        |
+| Int32     | `int`              |                                        |
+| Decimal   | `numeric`          |                                        |
+| Guid      | `uniqueidentifier` |                                        |
+| Byte[]    | `varbinary`        |                                        |
+| Byte      | `tinyint`          |                                        |
+| Enum      | `int`              |                                        |
 
 Complex types (classes and interfaces) are ignored
 
 ### Column properties
 
-Use `SqlColumnAttribute` to define column properties (length and nullability for `nvarchar`,  `precision` and `scale` for numeric):
+- Use `SqlColumnAttribute` to define column properties (length and nullability for `nvarchar`,  `precision` and `scale` for numeric).
+
+- Use `SqlDateColumnAttribute` to specify exact sql-type for `DateTime` column (`datetime`, `datetime2` or `date`).
 
 ```csharp
 [SqlUserType(TypeName = "t_example")]
 public class Example
 {
 	[SqlColumn(Length = 42)]
-	public string NotNullStringField { get; set; }
+	public string NotNullString { get; set; }
 	[SqlColumn(Length = 10, Nullable = true)]
-	public string NullStringField { get; set; }
-	 // string with max length
+	public string NullString { get; set; }
+	// string with max length
 	[SqlColumn(Length = SqlColumnAttribute.MaxLength)]
-	public string StringMaxField { get; set; }
+	public string StringMax { get; set; }
 	[SqlColumn(Presicion = 7, Scale = 3)]
-	public decimal DecimalField { get; set; }
-	[SqlColumn]
-	public DateTime DateTimeField { get; set; }
+	public decimal Decimal { get; set; }
+	[SqlDateColumn(SqlDateType.DateTime)]
+	public DateTime ExplicitDateTime { get; set; }
+	[SqlDateColumn(SqlDateType.DateTime2)]
+	public DateTime ExplicitDateTime2 { get; set; }
 }
 ```
 
@@ -83,7 +87,8 @@ create type [t_example] as table (
 	NullStringField nvarchar(10) null,
 	StringMaxField nvarchar(max) not null,
 	DecimalField numeric(7, 3) not null,
-	DateTimeField datetime2 not null
+	ExplicitDateTime datetime not null,
+	ExplicitDateTime2 datetime2 not null
 )
 ```
 

@@ -17,7 +17,7 @@ namespace SqlUserTypeGenerator
 				.Where(s => !string.IsNullOrEmpty(s))
 				.ToList();
 
-			var typeNameFromAttr = CustomAttributesHelper.GetTypeName(sqlUserTypeAttributeData);
+			var typeNameFromAttr = CustomAttributesHelper.GetSqlUserTypeTypeName(sqlUserTypeAttributeData);
 
 			return new SqlUserTypeDefinition()
 			{

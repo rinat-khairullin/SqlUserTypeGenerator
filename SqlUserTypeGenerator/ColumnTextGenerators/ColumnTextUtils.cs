@@ -6,8 +6,8 @@ namespace SqlUserTypeGenerator.ColumnTextGenerators
 {
 	internal class ColumnTextUtils
 	{
-		private static string _nullStr = "null";
-		private static string notNullStr = "not null";
+		private const string NullStr = "null";
+		private const string NotNullStr = "not null";
 
 		public static string GetColumnTypeString(string typeName, string columnLengthString)
 		{
@@ -17,14 +17,12 @@ namespace SqlUserTypeGenerator.ColumnTextGenerators
 		public static string GetColumnNullability(Type propType)
 		{
 			var isNullable = TypeHelper.IsNullableType(propType);
-			return isNullable ? _nullStr : notNullStr;
+			return isNullable ? NullStr : NotNullStr;
 		}
-
 		public static string GetColumnNullability(bool isNull)
 		{			
-			return isNull ? _nullStr : notNullStr;
+			return isNull ? NullStr : NotNullStr;
 		}
-
 
 		public static string GetColumnName(PropertyInfo propertyInfo)
 		{

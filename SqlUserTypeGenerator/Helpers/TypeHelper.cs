@@ -5,6 +5,12 @@ namespace SqlUserTypeGenerator.Helpers
 {
 	internal class TypeHelper
 	{
+		internal static Type ExtractNonNullableType<T>()
+		{
+			var type = typeof(T);
+			return GetNonNullableType(type) ?? type;
+		}
+
 		internal static Type ExtractNonNullableType(PropertyInfo pi)
 		{
 			return GetNonNullableType(pi.PropertyType) ?? pi.PropertyType;

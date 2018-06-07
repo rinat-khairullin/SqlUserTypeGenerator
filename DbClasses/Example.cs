@@ -9,9 +9,14 @@ namespace DbClasses
 		public string NotNullString { get; set; }
 		[SqlColumn(Length = 10, Nullable = true)]
 		public string NullString { get; set; }
+		// string with max length
 		[SqlColumn(Length = SqlColumnAttribute.MaxLength)]
 		public string StringMax { get; set; }
 		[SqlColumn(Presicion = 7, Scale = 3)]
 		public decimal Decimal { get; set; }
+		[SqlDateColumn(SqlDateType.DateTime)]
+		public DateTime ExplicitDateTime { get; set; }
+		[SqlDateColumn(SqlDateType.DateTime2)]
+		public DateTime ExplicitDateTime2 { get; set; }
 	}
 }

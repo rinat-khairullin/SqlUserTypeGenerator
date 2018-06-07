@@ -12,5 +12,4 @@ namespace SqlUserTypeGenerator
 
 		public const int MaxLength = -1;
 	}
-
 }

@@ -17,7 +17,7 @@ namespace SqlUserTypeGenerator
 			{typeof(string), (info, settings) => new NvarcharColumnGenerator("nvarchar", info)},
 			{typeof(decimal), (info, settings) => new DecimalColumnGenerator("numeric", info)},
 			{typeof(bool), (info, settings) => new ColumnTextGenerator("bit", info)},
-			{typeof(DateTime), (info, settings) => new ColumnTextGenerator(settings.UseSqlDateTime2 ? "datetime2" : "datetime", info)},
+			{typeof(DateTime), (info, settings) => new DateColumnGenerator(info, settings)},
 			{typeof(double), (info, settings) => new ColumnTextGenerator("float", info)},
 			{typeof(int), (info, settings) => new ColumnTextGenerator("int", info)},
 			{typeof(Guid), (info, settings) => new ColumnTextGenerator("uniqueidentifier", info)},
