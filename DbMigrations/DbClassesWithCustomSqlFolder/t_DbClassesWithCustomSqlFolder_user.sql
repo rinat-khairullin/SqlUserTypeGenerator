@@ -24,7 +24,7 @@ create type [t_DbClassesWithCustomSqlFolder_user] as table (
 	PropIntNull int null,
 	PropGuid uniqueidentifier not null,
 	PropGuidNull uniqueidentifier null,
-	PropByteArray varbinary not null,
+	PropByteArray varbinary(50) not null,
 	PropByte tinyint not null,
 	PropByteNull tinyint null
 )
