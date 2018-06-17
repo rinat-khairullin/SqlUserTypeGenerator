@@ -6,6 +6,7 @@ create type [t_example] as table (
 	StringMax nvarchar(max) not null,
 	Decimal numeric(7, 3) not null,
 	ExplicitDateTime datetime not null,
-	ExplicitDateTime2 datetime2 not null
+	ExplicitDateTime2 datetime2 not null,
+	VarbinaryMax varbinary(max) not null
 )
 go

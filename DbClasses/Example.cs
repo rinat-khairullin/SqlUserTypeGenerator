@@ -19,5 +19,8 @@ namespace DbClasses
 		public DateTime ExplicitDateTime { get; set; }
 		[SqlDateColumn(DateType = SqlDateType.DateTime2)]
 		public DateTime ExplicitDateTime2 { get; set; }
+
+		[SqlColumn(Length = SqlColumnAttribute.MaxLength)]
+		public byte[] VarbinaryMax { get; set; }
 	}
 }

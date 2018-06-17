@@ -18,7 +18,7 @@ create type [t_DbClasses_user] as table (
 	PropGuid uniqueidentifier not null,
 	PropGuidNull uniqueidentifier null,
 	NullableString nvarchar(50) null,
-	PropByteArray varbinary not null,
+	PropByteArray varbinary(50) not null,
 	PropByte tinyint not null,
 	PropByteNull22 tinyint null,
 	BaseProp nvarchar(23) not null
