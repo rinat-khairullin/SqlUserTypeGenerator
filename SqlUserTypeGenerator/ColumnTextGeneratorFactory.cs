@@ -8,24 +8,24 @@ namespace SqlUserTypeGenerator
 {
 	internal class ColumnTextGeneratorFactory
 	{
-		private delegate IColumnTextGenerator GeneratorCreateFunc(PropertyInfo pi, GenerateUserTypeSettings settings);
+		private delegate IColumnTextGenerator GeneratorCreateFunc(PropertyInfo pi);
 
 		private static readonly Dictionary<Type, GeneratorCreateFunc> Generators = new Dictionary<Type, GeneratorCreateFunc>()
 		{
 			//todo - get rid of "new" operator, use currying
-			{typeof(long), (info, settings) => new ColumnTextGenerator("bigint", info)},
-			{typeof(string), (info, settings) => new NvarcharColumnGenerator("nvarchar", info)},
-			{typeof(decimal), (info, settings) => new DecimalColumnGenerator("numeric", info)},
-			{typeof(bool), (info, settings) => new ColumnTextGenerator("bit", info)},
-			{typeof(DateTime), (info, settings) => new DateColumnGenerator(info, settings)},
-			{typeof(double), (info, settings) => new ColumnTextGenerator("float", info)},
-			{typeof(int), (info, settings) => new ColumnTextGenerator("int", info)},
-			{typeof(Guid), (info, settings) => new ColumnTextGenerator("uniqueidentifier", info)},
-			{typeof(byte[]), (info, settings) => new ColumnTextGenerator("varbinary", info)},
-			{typeof(byte), (info, settings) => new ColumnTextGenerator("tinyint", info)},
+			{typeof(long), (info) => new ColumnTextGenerator("bigint", info)},
+			{typeof(string), (info) => new NvarcharColumnGenerator("nvarchar", info)},
+			{typeof(decimal), (info) => new DecimalColumnGenerator("numeric", info)},
+			{typeof(bool), (info) => new ColumnTextGenerator("bit", info)},
+			{typeof(DateTime), (info) => new DateColumnGenerator(info)},
+			{typeof(double), (info) => new ColumnTextGenerator("float", info)},
+			{typeof(int), (info) => new ColumnTextGenerator("int", info)},
+			{typeof(Guid), (info) => new ColumnTextGenerator("uniqueidentifier", info)},
+			{typeof(byte[]), (info) => new ColumnTextGenerator("varbinary", info)},
+			{typeof(byte), (info) => new ColumnTextGenerator("tinyint", info)},
 		};
 
-		public static IColumnTextGenerator CreateGenerator(PropertyInfo pi, GenerateUserTypeSettings settings)
+		public static IColumnTextGenerator CreateGenerator(PropertyInfo pi)
 		{
 			var propertyBaseType = TypeHelper.ExtractNonNullableType(pi);
 
@@ -38,7 +38,7 @@ namespace SqlUserTypeGenerator
 
 			if (Generators.ContainsKey(sourceType))
 			{
-				return Generators[sourceType](pi, settings);
+				return Generators[sourceType](pi);
 			}
 			else
 			{

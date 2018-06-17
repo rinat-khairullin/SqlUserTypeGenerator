@@ -8,12 +8,12 @@ namespace SqlUserTypeGenerator
 {
 	public class SqlGenerator
 	{
-		internal static SqlUserTypeDefinition GenerateUserType(Type type, CustomAttributeData sqlUserTypeAttributeData, GenerateUserTypeSettings settings)
+		internal static SqlUserTypeDefinition GenerateUserType(Type type, CustomAttributeData sqlUserTypeAttributeData)
 		{
 			var cols = type.GetProperties();
 
 			IList<string> sqlColumns = cols
-				.Select(i => CreateSqlColumnString(i, settings))
+				.Select(i => CreateSqlColumnString(i))
 				.Where(s => !string.IsNullOrEmpty(s))
 				.ToList();
 
@@ -26,14 +26,10 @@ namespace SqlUserTypeGenerator
 			};
 		}
 
-		internal static string CreateSqlColumnString(PropertyInfo property, GenerateUserTypeSettings settings)
+		internal static string CreateSqlColumnString(PropertyInfo property)
 		{
-			var gen = ColumnTextGeneratorFactory.CreateGenerator(property, settings);
+			var gen = ColumnTextGeneratorFactory.CreateGenerator(property);
 			return gen != null ? $"{gen.GetColumnName()} {gen.GetColumnType()} {gen.GetColumnNullability()}" : string.Empty;
 		}
-	}
-
-	public class GenerateUserTypeSettings
-	{
 	}
 }

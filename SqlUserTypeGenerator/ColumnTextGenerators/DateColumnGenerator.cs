@@ -7,12 +7,10 @@ namespace SqlUserTypeGenerator.ColumnTextGenerators
 	internal class DateColumnGenerator : IColumnTextGenerator
 	{
 		private readonly PropertyInfo _propertyInfo;
-		private GenerateUserTypeSettings _settings;
 
-		public DateColumnGenerator(PropertyInfo info, GenerateUserTypeSettings settings)
+		public DateColumnGenerator(PropertyInfo info)
 		{
 			_propertyInfo = info;
-			_settings = settings;
 		}
 
 		public string GetColumnName()

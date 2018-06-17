@@ -43,11 +43,11 @@ namespace SqlUserTypeGenerator
 			var types = GetTypesWithSqlTypeAttribute(assembly);
 
 			var headerText = GetHeaderText();
-			var generateUserTypeSettings = new GenerateUserTypeSettings();
+			
 
 			foreach (var type in types)
 			{
-				var generatedType = SqlGenerator.GenerateUserType(type.UserType, type.SqlUserTypeAttributeData, generateUserTypeSettings);
+				var generatedType = SqlGenerator.GenerateUserType(type.UserType, type.SqlUserTypeAttributeData);
 
 				var generatedSql = BuildSqlText(generatedType);
 
