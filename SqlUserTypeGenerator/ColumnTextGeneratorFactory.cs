@@ -11,19 +11,38 @@ namespace SqlUserTypeGenerator
 		private delegate IColumnTextGenerator GeneratorCreateFunc(PropertyInfo pi);
 
 		private static readonly Dictionary<Type, GeneratorCreateFunc> Generators = new Dictionary<Type, GeneratorCreateFunc>()
-		{
-			//todo - get rid of "new" operator, use currying
-			{typeof(long), (info) => new ColumnTextGenerator("bigint", info)},
-			{typeof(string), (info) => new NvarcharColumnGenerator("nvarchar", info)},
-			{typeof(decimal), (info) => new DecimalColumnGenerator("numeric", info)},
-			{typeof(bool), (info) => new ColumnTextGenerator("bit", info)},
-			{typeof(DateTime), (info) => new DateColumnGenerator(info)},
-			{typeof(double), (info) => new ColumnTextGenerator("float", info)},
-			{typeof(int), (info) => new ColumnTextGenerator("int", info)},
-			{typeof(Guid), (info) => new ColumnTextGenerator("uniqueidentifier", info)},
-			{typeof(byte[]), (info) => new ColumnTextGenerator("varbinary", info)},
-			{typeof(byte), (info) => new ColumnTextGenerator("tinyint", info)},
+		{			
+			{typeof(long), CreateColumnTextGenerator("bigint")},
+			{typeof(string), CreateNvarcharColumnGenerator()},
+			{typeof(decimal), CreateDecimalColumnGenerator()},
+			{typeof(bool), CreateColumnTextGenerator("bit")},
+			{typeof(DateTime), CreateDateColumnGenerator()},
+			{typeof(double), CreateColumnTextGenerator("float")},
+			{typeof(int), CreateColumnTextGenerator("int")},
+			{typeof(Guid), CreateColumnTextGenerator("uniqueidentifier")},
+			{typeof(byte[]), CreateColumnTextGenerator("varbinary")},
+			{typeof(byte), CreateColumnTextGenerator("tinyint")},
 		};
+
+		private static GeneratorCreateFunc CreateColumnTextGenerator(string typeName)
+		{
+			return (propInfo) => new ColumnTextGenerator(typeName, propInfo);
+		}
+
+		private static GeneratorCreateFunc CreateNvarcharColumnGenerator()
+		{
+			return (propInfo) => new NvarcharColumnGenerator("nvarchar", propInfo);
+		}
+
+		private static GeneratorCreateFunc CreateDecimalColumnGenerator()
+		{
+			return (propInfo) => new DecimalColumnGenerator("numeric", propInfo);
+		}
+
+		private static GeneratorCreateFunc CreateDateColumnGenerator()
+		{
+			return (propInfo) => new DateColumnGenerator(propInfo);
+		}
 
 		public static IColumnTextGenerator CreateGenerator(PropertyInfo pi)
 		{
