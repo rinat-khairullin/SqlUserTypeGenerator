@@ -13,14 +13,14 @@ namespace SqlUserTypeGenerator
 		private static readonly Dictionary<Type, GeneratorCreateFunc> Generators = new Dictionary<Type, GeneratorCreateFunc>()
 		{			
 			{typeof(long), CreateColumnTextGenerator("bigint")},
-			{typeof(string), CreateNvarcharColumnGenerator()},
+			{typeof(string), CreateNvarcharColumnGenerator("nvarchar")},
 			{typeof(decimal), CreateDecimalColumnGenerator()},
 			{typeof(bool), CreateColumnTextGenerator("bit")},
 			{typeof(DateTime), CreateDateColumnGenerator()},
 			{typeof(double), CreateColumnTextGenerator("float")},
 			{typeof(int), CreateColumnTextGenerator("int")},
 			{typeof(Guid), CreateColumnTextGenerator("uniqueidentifier")},
-			{typeof(byte[]), CreateColumnTextGenerator("varbinary")},
+			{typeof(byte[]), CreateNvarcharColumnGenerator("varbinary")},
 			{typeof(byte), CreateColumnTextGenerator("tinyint")},
 		};
 
@@ -29,9 +29,9 @@ namespace SqlUserTypeGenerator
 			return (propInfo) => new ColumnTextGenerator(typeName, propInfo);
 		}
 
-		private static GeneratorCreateFunc CreateNvarcharColumnGenerator()
+		private static GeneratorCreateFunc CreateNvarcharColumnGenerator(string typeName)
 		{
-			return (propInfo) => new NvarcharColumnGenerator("nvarchar", propInfo);
+			return (propInfo) => new NvarcharColumnGenerator(typeName, propInfo);
 		}
 
 		private static GeneratorCreateFunc CreateDecimalColumnGenerator()

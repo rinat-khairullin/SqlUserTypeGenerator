@@ -14,7 +14,7 @@ namespace SqlUserTypeGenerator.Tests
 		[TestCaseSource(typeof(ColumnsGenerationTestData), nameof(ColumnsGenerationTestData.TestCases))]
 		public bool ColumnsGenerationTest(PropertyInfo pi, string expected)
 		{
-			var generated = SqlGenerator.CreateSqlColumnString(pi, new GenerateUserTypeSettings());
+			var generated = SqlGenerator.CreateSqlColumnString(pi);
 			Assert.AreEqual(expected, generated);
 			return true;
 		}
@@ -68,6 +68,9 @@ namespace SqlUserTypeGenerator.Tests
 		[SqlColumn(Nullable = true, Length = 22)]
 		public string NullableStringWithLength { get; set; }
 
+		[SqlColumn(Length = SqlColumnAttribute.MaxLength)]
+		public byte[] VarbinaryMax { get; set; }
+
 		public FileAccess EnumTest { get; set; }
 		public FileAccess? NullEnumTest { get; set; }
 
@@ -111,11 +114,12 @@ namespace SqlUserTypeGenerator.Tests
 						{GetProperty(nameof(SourceClass.PropIntNull)), "PropIntNull int null"},
 						{GetProperty(nameof(SourceClass.PropGuid)), "PropGuid uniqueidentifier not null"},
 						{GetProperty(nameof(SourceClass.PropGuidNull)), "PropGuidNull uniqueidentifier null"},
-						{GetProperty(nameof(SourceClass.PropByteArray)), "PropByteArray varbinary not null"},
+						{GetProperty(nameof(SourceClass.PropByteArray)), "PropByteArray varbinary(50) not null"},
 						{GetProperty(nameof(SourceClass.PropByte)), "PropByte tinyint not null"},
 						{GetProperty(nameof(SourceClass.PropByteNull)), "PropByteNull tinyint null"},
 						{GetProperty(nameof(SourceClass.NullableString)), "NullableString nvarchar(50) null"},
 						{GetProperty(nameof(SourceClass.NullableStringWithLength)), "NullableStringWithLength nvarchar(22) null"},
+						{GetProperty(nameof(SourceClass.VarbinaryMax)), "VarbinaryMax varbinary(max) not null"},
 
 						{GetProperty(nameof(SourceClass.EnumTest)), "EnumTest int not null"},
 						{GetProperty(nameof(SourceClass.NullEnumTest)), "NullEnumTest int null"},
