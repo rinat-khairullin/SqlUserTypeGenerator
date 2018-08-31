@@ -78,6 +78,9 @@ namespace SqlUserTypeGenerator.Tests
 
 		public IUserInterface UserInterface { get; set; }
 		public UserClass UserClass { get; set; }
+
+		[SqlColumn(Name = "custom_name")]
+		public int? CustomName { get; set; }
 	}
 
 	public class ColumnsGenerationTestData
@@ -127,6 +130,7 @@ namespace SqlUserTypeGenerator.Tests
 
 						{GetProperty(nameof(SourceClass.UserClass)), string.Empty},
 						{GetProperty(nameof(SourceClass.UserInterface)), string.Empty},
+						{GetProperty(nameof(SourceClass.CustomName)), "custom_name int null"},
 					}
 					.Select(kvp => new TestCaseData(kvp.Key, kvp.Value).Returns(true));
 			}

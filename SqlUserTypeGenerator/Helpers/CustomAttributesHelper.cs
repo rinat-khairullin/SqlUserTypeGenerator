@@ -42,6 +42,12 @@ namespace SqlUserTypeGenerator.Helpers
 			return GetAttributeValue<SqlDateType?>(pi, nameof(SqlDateColumnAttribute.DateType));
 		}
 
+		public static string GetSqlDateColumnName(PropertyInfo pi)
+		{
+			return GetAttributeValue<string>(pi, nameof(SqlColumnAttribute.Name));
+		}
+
+
 		private static T GetAttributeValue<T>(PropertyInfo propInfo, string attrName)
 		{
 			var columnProps = GetColumnProperties(propInfo);

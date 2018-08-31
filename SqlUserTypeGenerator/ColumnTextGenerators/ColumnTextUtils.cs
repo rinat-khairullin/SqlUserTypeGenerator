@@ -26,7 +26,7 @@ namespace SqlUserTypeGenerator.ColumnTextGenerators
 
 		public static string GetColumnName(PropertyInfo propertyInfo)
 		{
-			return propertyInfo.Name;
+			return CustomAttributesHelper.GetSqlDateColumnName(propertyInfo) ?? propertyInfo.Name;
 		}
 	}
 }
