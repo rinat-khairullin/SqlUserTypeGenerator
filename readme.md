@@ -78,6 +78,8 @@ public class Example
 	public DateTime ExplicitDateTime { get; set; }
 	[SqlDateColumn(SqlDateType.DateTime2)]
 	public DateTime ExplicitDateTime2 { get; set; }
+	[SqlColumn(Name = "custom_name")]
+	public int? CustomName { get; set; }
 }
 ```
 
@@ -88,7 +90,8 @@ create type [t_example] as table (
 	StringMaxField nvarchar(max) not null,
 	DecimalField numeric(7, 3) not null,
 	ExplicitDateTime datetime not null,
-	ExplicitDateTime2 datetime2 not null
+	ExplicitDateTime2 datetime2 not null,
+	custom_name int null
 )
 ```
 
