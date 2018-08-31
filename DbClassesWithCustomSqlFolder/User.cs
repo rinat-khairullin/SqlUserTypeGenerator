@@ -37,5 +37,8 @@ namespace DbClassesWithCustomSqlFolder
 		public byte[] PropByteArray { get; set; }
 		public byte PropByte { get; set; }
 		public byte? PropByteNull { get; set; }
+
+		[SqlColumn(Name = "custom_name")]
+		public int? CustomName { get; set; }
 	}
 }
