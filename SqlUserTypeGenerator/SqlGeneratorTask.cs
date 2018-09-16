@@ -81,7 +81,7 @@ namespace SqlUserTypeGenerator
 			return string.Empty
 				+ (!string.IsNullOrEmpty(typePreCreateCode) ? $"{typePreCreateCode}{_newLine}" : string.Empty)
 
-				+ $"create type [{generatedType.TypeName}] as table ( {_newLine}"
+				+ $"create type [{generatedType.TypeName}] as table ({_newLine}"
 				+ string.Join($",{_newLine}", generatedType.Columns.Select(c => "\t" + c))
 				+ $"{_newLine}){_newLine}go"
 
