@@ -4,7 +4,7 @@
 if type_id(N'[t_DbClassesWithCustomSqlFolder_user]') is not null drop type [t_DbClassesWithCustomSqlFolder_user]
 go
 
-create type [t_DbClassesWithCustomSqlFolder_user] as table ( 
+create type [t_DbClassesWithCustomSqlFolder_user] as table (
 	PropLong bigint not null,
 	PropLongNull bigint null,
 	PropString nvarchar(42) not null,
