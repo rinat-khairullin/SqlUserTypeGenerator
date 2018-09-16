@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>SqlUserTypeGenerator</id>
-    <version>1.0.16</version>
+    <version>1.0.17</version>
     <title>SqlUserTypeGenerator</title>
     <authors>Rinat Khairullin</authors>
     <owners>Rinat Khairullin</owners>
@@ -16,9 +16,9 @@
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="Microsoft.Build.Framework"  />
     </frameworkAssemblies>
-  </metadata>  
+  </metadata>
     <files>
         <file src="bin\Release\*.dll" target="lib\net452" />
         <file src="build\*.targets" target="build" />
-    </files>  
+    </files>
 </package>
