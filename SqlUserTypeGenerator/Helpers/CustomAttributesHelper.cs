@@ -9,7 +9,7 @@ namespace SqlUserTypeGenerator.Helpers
 	{
 		public static CustomAttributeData GetSqlUserTypeAttributeData(Type type)
 		{
-			return GetCustomAttributeByName(type.GetCustomAttributesData(), typeof(SqlUserTypeAttribute).FullName);
+			return GetCustomAttributesByName(type.GetCustomAttributesData(), typeof(SqlUserTypeAttribute).FullName).FirstOrDefault();
 		}
 
 		public static string GetSqlUserTypeTypeName(CustomAttributeData cad)
@@ -51,26 +51,30 @@ namespace SqlUserTypeGenerator.Helpers
 		private static T GetAttributeValue<T>(PropertyInfo propInfo, string attrName)
 		{
 			var columnProps = GetColumnProperties(propInfo);
-			var attrValue = GetAttributeArgumentValue(columnProps, attrName);
-			if (attrValue == null)
-				return default(T);
-
-			var propType = TypeHelper.ExtractNonNullableType<T>();
-			if (propType.IsEnum)
+			foreach (var customAttributeData in columnProps)
 			{
-				return (T)Enum.ToObject(propType, attrValue);
+				var attrValue = GetAttributeArgumentValue(customAttributeData, attrName);
+				if (attrValue == null)
+					continue;
+
+				var propType = TypeHelper.ExtractNonNullableType<T>();
+				if (propType.IsEnum)
+				{
+					return (T)Enum.ToObject(propType, attrValue);
+				}
+
+				return (T)Convert.ChangeType(attrValue, propType);
 			}
 
-			return (T) Convert.ChangeType(attrValue, propType);
+			return default(T);
 		}
 
-		private static CustomAttributeData GetColumnProperties(PropertyInfo pi)
+		private static IList<CustomAttributeData> GetColumnProperties(PropertyInfo pi)
 		{
-			var columnProps = GetCustomAttributeByName(pi.GetCustomAttributesData(),
+			return GetCustomAttributesByName(pi.GetCustomAttributesData(),
 				typeof(SqlColumnAttribute).FullName,
 				typeof(SqlDateColumnAttribute).FullName
-				);
-			return columnProps;
+			);
 		}
 
 		private static object GetAttributeArgumentValue(CustomAttributeData attr, string argName)
@@ -80,18 +84,19 @@ namespace SqlUserTypeGenerator.Helpers
 				.TypedValue.Value;
 		}
 
-		private static CustomAttributeData GetCustomAttributeByName(IList<CustomAttributeData> customAttributes, params string[] attributeTypeFullNames)
+		private static IList<CustomAttributeData> GetCustomAttributesByName(IList<CustomAttributeData> customAttributes, params string[] attributeTypeFullNames)
 		{
+			var result = new List<CustomAttributeData>();
 			foreach (var cad in customAttributes)
 			{
 				foreach (var attributeTypeFullName in attributeTypeFullNames)
 				{
 					if (StringHelper.IsEqualStrings(cad.AttributeType.FullName, attributeTypeFullName))
-						return cad;
+						result.Add(cad);
 				}
 			}
 
-			return null;
+			return result;
 		}
 	}
 }
