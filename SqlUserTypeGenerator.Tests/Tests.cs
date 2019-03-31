@@ -45,6 +45,7 @@ namespace SqlUserTypeGenerator.Tests
 		[SqlDateColumn(DateType = SqlDateType.DateTime2)]
 		public DateTime PropExplicitDateTime2 { get; set; }
 
+		//bug #6
 		[SqlColumn(Name = "prop_explicit_datetime2_with_custom_name"), SqlDateColumn(DateType = SqlDateType.DateTime2)]
 		public DateTime PropExplicitDateTime2WithCustomName { get; set; }
 
@@ -57,6 +58,7 @@ namespace SqlUserTypeGenerator.Tests
 		[SqlDateColumn(DateType = SqlDateType.DateTime2)]
 		public DateTime? PropExplicitNullableDateTime2 { get; set; }
 
+		//bug #6
 		[SqlColumn(Name = "prop_explicit_nullable_datetime2_with_custom_name"), SqlDateColumn(DateType = SqlDateType.DateTime2)]
 		public DateTime? PropExplicitNullableDateTime2WithCustomName { get; set; }
 
