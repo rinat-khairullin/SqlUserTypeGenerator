@@ -51,6 +51,7 @@
     <Compile Include="ColumnTextGenerators\IColumnTextGenerator.cs" />
     <Compile Include="ColumnTextGenerators\NvarcharColumnGenerator.cs" />
     <Compile Include="Helpers\CustomAttributesHelper.cs" />
+    <Compile Include="Helpers\FaultHelper.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Helpers\TypeHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

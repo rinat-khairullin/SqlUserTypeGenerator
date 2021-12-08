@@ -26,48 +26,59 @@ namespace SqlUserTypeGenerator
 
 		public bool Execute()
 		{
-			//BuildEngine.LogMessageEvent(new BuildMessageEventArgs("test custom task", destFolderAbsolutePath, "sender", MessageImportance.High));
-
-			if (!Directory.Exists(DestinationFolder))
+			try
 			{
-				Directory.CreateDirectory(DestinationFolder);
+				if (!Directory.Exists(DestinationFolder))
+				{
+					Directory.CreateDirectory(DestinationFolder);
+				}
+
+				AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
+
+				LoadDependentAssemblies(SourceAssemblyPath);
+
+				//load target assembly
+				var assembly = Assembly.ReflectionOnlyLoadFrom(SourceAssemblyPath);
+
+				var types = GetTypesWithSqlTypeAttribute(assembly);
+
+				var headerText = GetHeaderText();
+
+				foreach (var type in types)
+				{
+					var generatedType = SqlGenerator.GenerateUserType(type.UserType, type.SqlUserTypeAttributeData);
+
+					var generatedSql = BuildSqlText(generatedType);
+
+					var targetFile = Path.ChangeExtension(Path.Combine(DestinationFolder, GetSafeFilename(generatedType.TypeName)), "sql");
+
+					File.WriteAllText(targetFile, headerText + generatedSql, Encoding.UTF8);
+				}
+
+				return true;
+			}
+			catch (ReflectionTypeLoadException exc)
+			{
+				var msg = FaultHelper.GetMessage(exc);
+				BuildEngine.LogErrorEvent(FaultHelper.CreateErrorEvent(FaultHelper.AssemblyLoadError, SourceAssemblyPath, msg));
+			}
+			catch (Exception exc)
+			{
+				var msg = FaultHelper.GetMessageCore(exc);
+				BuildEngine.LogErrorEvent(FaultHelper.CreateErrorEvent(FaultHelper.GeneralError, SourceAssemblyPath, msg));
 			}
 
-			AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
-
-			LoadDependentAssemblies(SourceAssemblyPath);
-
-			//load target assembly
-			Assembly assembly = Assembly.ReflectionOnlyLoadFrom(SourceAssemblyPath); ;
-
-			var types = GetTypesWithSqlTypeAttribute(assembly);
-
-			var headerText = GetHeaderText();
-			
-
-			foreach (var type in types)
-			{
-				var generatedType = SqlGenerator.GenerateUserType(type.UserType, type.SqlUserTypeAttributeData);
-
-				var generatedSql = BuildSqlText(generatedType);
-
-				var targetFile = Path.ChangeExtension(Path.Combine(DestinationFolder, GetSafeFilename(generatedType.TypeName)), "sql");
-
-				File.WriteAllText(targetFile, headerText + generatedSql, Encoding.UTF8);
-			}
-
-			return true;
+			return false;
 		}
 
 		private List<UserTypeWithSqlUserTypeAttribute> GetTypesWithSqlTypeAttribute(Assembly assembly)
 		{
 			return assembly.GetTypes()
-				.Select(t =>
-					new UserTypeWithSqlUserTypeAttribute()
-					{
-						UserType = t,
-						SqlUserTypeAttributeData = CustomAttributesHelper.GetSqlUserTypeAttributeData(t)
-					})
+				.Select(t => new UserTypeWithSqlUserTypeAttribute
+				{
+					UserType = t,
+					SqlUserTypeAttributeData = CustomAttributesHelper.GetSqlUserTypeAttributeData(t)
+				})
 				.Where(ut => ut.SqlUserTypeAttributeData != null)
 				.ToList();
 		}
@@ -80,13 +91,11 @@ namespace SqlUserTypeGenerator
 
 			return string.Empty
 				+ (!string.IsNullOrEmpty(typePreCreateCode) ? $"{typePreCreateCode}{_newLine}" : string.Empty)
-
 				+ $"create type [{generatedType.TypeName}] as table ({_newLine}"
 				+ string.Join($",{_newLine}", generatedType.Columns.Select(c => "\t" + c))
 				+ $"{_newLine}){_newLine}go"
-
 				+ (!string.IsNullOrEmpty(typePostCreateCode) ? $"{_newLine}{typePostCreateCode}" : string.Empty)
-			;
+				;
 		}
 
 		private void LoadDependentAssemblies(string sourceAssemblyPath)
@@ -109,11 +118,10 @@ namespace SqlUserTypeGenerator
 			public CustomAttributeData SqlUserTypeAttributeData { get; set; }
 		}
 
-
 		private Assembly CurrentDomain_ReflectionOnlyAssemblyResolve(object sender, ResolveEventArgs args)
 		{
-			string missedAssemblyFullName = args.Name;
-			Assembly assembly = Assembly.ReflectionOnlyLoad(missedAssemblyFullName);
+			var missedAssemblyFullName = args.Name;
+			var assembly = Assembly.ReflectionOnlyLoad(missedAssemblyFullName);
 			return assembly;
 		}
 
