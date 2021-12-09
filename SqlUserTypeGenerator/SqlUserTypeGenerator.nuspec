@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>SqlUserTypeGenerator</id>
-    <version>1.0.18</version>
+    <version>1.0.19</version>
     <title>SqlUserTypeGenerator</title>
     <authors>Rinat Khairullin</authors>
     <owners>Rinat Khairullin</owners>
@@ -11,7 +11,6 @@
     <summary>Generates SQL user-defined type (UDT) from C# class</summary>
     <licenseUrl>https://github.com/rinat-khairullin/SqlUserTypeGenerator/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/rinat-khairullin/SqlUserTypeGenerator</projectUrl>
-    <copyright>Copyright ©  2019</copyright>
     <dependencies />
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="Microsoft.Build.Framework"  />
