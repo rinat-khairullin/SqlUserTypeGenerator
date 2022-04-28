@@ -106,9 +106,18 @@ namespace SqlUserTypeGenerator
 			var files = Directory.GetFiles(directoryName)
 				.Where(f => StringHelper.IsEqualStrings(Path.GetExtension(f), ".dll"));
 
-			foreach (var file in files)
+			try
 			{
-				Assembly.ReflectionOnlyLoadFrom(file);
+				foreach (var file in files)
+				{
+					Assembly.ReflectionOnlyLoadFrom(file);
+				}
+			}
+			// ignore native dll loading errors
+			catch (BadImageFormatException exc)
+			{
+				var msg = FaultHelper.GetMessageCore(exc);
+				BuildEngine.LogErrorEvent(FaultHelper.CreateErrorEvent(FaultHelper.AssemblyLoadError, SourceAssemblyPath, msg));
 			}
 		}
 
