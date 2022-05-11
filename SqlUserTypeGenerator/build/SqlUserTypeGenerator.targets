@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<UsingTask
 		TaskName="SqlUserTypeGenerator.BuildTasks.ArgumentEncodeTask"
@@ -9,12 +9,16 @@
 		AssemblyFile="$(TargetDir)SqlUserTypeGenerator.dll"
 	/>
 
-	<Target Name="CustomTarget" AfterTargets="Build" Condition="$(BuildingInsideVisualStudio) != '' OR $(SqlUserTypeGenerator_LocalDbg) != '' ">
+	<Target Name="CustomTarget" AfterTargets="Build"
+	        Condition="$(BuildingInsideVisualStudio) != '' OR $(SqlUserTypeGenerator_LocalDbg) != '' ">
 		<ArgumentEncodeTask Value="$(SqlUserTypeGenerator_TypePreCreateCode)">
 			<Output TaskParameter="EncodedArgument" PropertyName="EncodedTypePreCreateCode" />
 		</ArgumentEncodeTask>
 		<ArgumentEncodeTask Value="$(SqlUserTypeGenerator_TypePostCreateCode)">
 			<Output TaskParameter="EncodedArgument" PropertyName="EncodedTypePostCreateCode" />
+		</ArgumentEncodeTask>
+		<ArgumentEncodeTask Value="$(SqlUserTypeGenerator_Ignore)">
+			<Output TaskParameter="EncodedArgument" PropertyName="EncodedIgnore" />
 		</ArgumentEncodeTask>
 		<BuildDestinationFolderTask Value="$(SqlUserTypeGenerator_TargetFolder)" ProjectDir="$(ProjectDir)">
 			<Output TaskParameter="Path" PropertyName="DestinationFolder" />
@@ -27,6 +31,17 @@
 				msbuild Project.csproj /p:SourceDir="C:\Path\" <- last quote escaped - error
 				msbuild Project.csproj /p:SourceDir="C:\Path\\" <- ok
 		-->
-		<Exec Command="&quot;$(MSBuildToolsPath)\msbuild.exe&quot; &quot;$(MSBuildThisFileDirectory)SqlTypeGeneratorRunner.targets&quot; /p:TargetDir=&quot;$(TargetDir)\&quot; /p:SourceAssemblyPath=&quot;$(TargetPath)&quot; /p:DestinationFolder=&quot;$(DestinationFolder)&quot; /p:EncodedTypePreCreateCode=&quot;$(EncodedTypePreCreateCode)&quot; /p:EncodedTypePostCreateCode=&quot;$(EncodedTypePostCreateCode)&quot;"  />
+
+		<Exec Command="
+			&quot;$(MSBuildToolsPath)\msbuild.exe&quot; ^
+			&quot;$(MSBuildThisFileDirectory)SqlTypeGeneratorRunner.targets&quot; ^
+				/p:TargetDir=&quot;$(TargetDir)\&quot; ^
+				/p:SourceAssemblyPath=&quot;$(TargetPath)&quot; ^
+				/p:DestinationFolder=&quot;$(DestinationFolder)&quot; ^
+				/p:EncodedTypePreCreateCode=&quot;$(EncodedTypePreCreateCode)&quot; ^
+				/p:EncodedTypePostCreateCode=&quot;$(EncodedTypePostCreateCode)&quot; ^
+				/p:EncodedIgnore=&quot;$(EncodedIgnore)&quot;"
+		/>
+
 	</Target>
 </Project>

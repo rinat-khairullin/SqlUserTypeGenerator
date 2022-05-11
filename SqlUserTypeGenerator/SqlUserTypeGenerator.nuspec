@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
-  <metadata>
-    <id>SqlUserTypeGenerator</id>
-    <version>1.0.21</version>
-    <title>SqlUserTypeGenerator</title>
-    <authors>Rinat Khairullin</authors>
-    <owners>Rinat Khairullin</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Generates SQL user-defined type (UDT) from C# class</description>
-    <summary>Generates SQL user-defined type (UDT) from C# class</summary>
-    <licenseUrl>https://github.com/rinat-khairullin/SqlUserTypeGenerator/blob/master/LICENSE</licenseUrl>
-    <projectUrl>https://github.com/rinat-khairullin/SqlUserTypeGenerator</projectUrl>
-    <dependencies />
-    <frameworkAssemblies>
-      <frameworkAssembly assemblyName="Microsoft.Build.Framework"  />
-    </frameworkAssemblies>
-  </metadata>
-    <files>
-        <file src="bin\Release\*.dll" target="lib\net452" />
-        <file src="build\*.targets" target="build" />
-    </files>
+	<metadata>
+		<id>SqlUserTypeGenerator</id>
+		<version>1.0.22</version>
+		<title>SqlUserTypeGenerator</title>
+		<authors>Rinat Khairullin</authors>
+		<owners>Rinat Khairullin</owners>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>Generates SQL user-defined type (UDT) from C# class</description>
+		<summary>Generates SQL user-defined type (UDT) from C# class</summary>
+		<licenseUrl>https://github.com/rinat-khairullin/SqlUserTypeGenerator/blob/master/LICENSE</licenseUrl>
+		<projectUrl>https://github.com/rinat-khairullin/SqlUserTypeGenerator</projectUrl>
+		<dependencies />
+		<frameworkAssemblies>
+			<frameworkAssembly assemblyName="Microsoft.Build.Framework" />
+		</frameworkAssemblies>
+	</metadata>
+	<files>
+		<file src="bin\Release\*.dll" target="lib\net452" />
+		<file src="bin\Release\*.xml" target="lib\net452" />
+		<file src="build\*.targets" target="build" />
+	</files>
 </package>
