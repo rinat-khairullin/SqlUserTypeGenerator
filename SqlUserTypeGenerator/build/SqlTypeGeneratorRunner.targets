@@ -10,6 +10,7 @@
 			DestinationFolder="$(DestinationFolder)"
 			EncodedTypePreCreateCode="$(EncodedTypePreCreateCode)"
 			EncodedTypePostCreateCode="$(EncodedTypePostCreateCode)"
+			EncodedIgnore="$(EncodedIgnore)"
 		/>
 	</Target>
 </Project>

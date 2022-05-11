@@ -7,23 +7,37 @@ using System.Text;
 using Microsoft.Build.Framework;
 using SqlUserTypeGenerator.Helpers;
 
+// ReSharper disable UnusedType.Global
+
 namespace SqlUserTypeGenerator
 {
+	/// <summary> Main msbuild sql generator task </summary>
 	public class SqlGeneratorTask : ITask
 	{
 		private readonly string _newLine = Environment.NewLine;
 
+		/// <summary> Assembly to inspect for classes of sql-user types </summary>
 		public string SourceAssemblyPath { get; set; }
 
-		//absolute path to generated files
+		/// <summary> Absolute path to generated files </summary>
 		public string DestinationFolder { get; set; }
 
+		/// <summary> Text block that will be inserted before sql-generated type </summary>
 		public string EncodedTypePreCreateCode { get; set; }
+
+		/// <summary> Text block that will be inserted after sql-generated type </summary>
 		public string EncodedTypePostCreateCode { get; set; }
 
+		/// <summary> List of ignored files, delimited by ; or newline </summary>
+		public string EncodedIgnore { get; set; }
+
+		/// <inheritdoc />
 		public IBuildEngine BuildEngine { get; set; }
+
+		/// <inheritdoc />
 		public ITaskHost HostObject { get; set; }
 
+		/// <inheritdoc />
 		public bool Execute()
 		{
 			try
@@ -35,7 +49,7 @@ namespace SqlUserTypeGenerator
 
 				AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
 
-				LoadDependentAssemblies(SourceAssemblyPath);
+				LoadDependentAssemblies(SourceAssemblyPath, GetIgnoreFiles());
 
 				//load target assembly
 				var assembly = Assembly.ReflectionOnlyLoadFrom(SourceAssemblyPath);
@@ -71,6 +85,28 @@ namespace SqlUserTypeGenerator
 			return false;
 		}
 
+		private HashSet<string> GetIgnoreFiles()
+		{
+			var result = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+			var ignoredFiles = StringHelper.DecodeArgument(EncodedIgnore)
+				?.Split(new[] { ';', (char)10, (char)13 }, StringSplitOptions.RemoveEmptyEntries)
+				.Where(x => !string.IsNullOrWhiteSpace(x))
+				.Select(x => x.Trim());
+
+			if (ignoredFiles == null)
+			{
+				return result;
+			}
+
+			foreach (var file in ignoredFiles)
+			{
+				result.Add(file);
+			}
+
+			return result;
+		}
+
 		private List<UserTypeWithSqlUserTypeAttribute> GetTypesWithSqlTypeAttribute(Assembly assembly)
 		{
 			return assembly.GetTypes()
@@ -98,26 +134,27 @@ namespace SqlUserTypeGenerator
 				;
 		}
 
-		private void LoadDependentAssemblies(string sourceAssemblyPath)
+		private void LoadDependentAssemblies(string sourceAssemblyPath, HashSet<string> ignoredFiles)
 		{
 			//load all assemblies in project output folder to reflection-only context
 			var directoryName = Path.GetDirectoryName(sourceAssemblyPath);
 
 			var files = Directory.GetFiles(directoryName)
-				.Where(f => StringHelper.IsEqualStrings(Path.GetExtension(f), ".dll"));
+				.Where(f => StringHelper.IsEqualStrings(Path.GetExtension(f), ".dll"))
+				.Where(x => !ignoredFiles.Contains(Path.GetFileName(x)));
 
-			try
+			foreach (var file in files)
 			{
-				foreach (var file in files)
+				try
 				{
 					Assembly.ReflectionOnlyLoadFrom(file);
 				}
-			}
-			// ignore native dll loading errors
-			catch (BadImageFormatException exc)
-			{
-				var msg = FaultHelper.GetMessageCore(exc);
-				BuildEngine.LogErrorEvent(FaultHelper.CreateErrorEvent(FaultHelper.AssemblyLoadError, SourceAssemblyPath, msg));
+				// ignore native dll loading errors
+				catch (BadImageFormatException exc)
+				{
+					var msg = FaultHelper.GetMessageCore(exc);
+					BuildEngine.LogErrorEvent(FaultHelper.CreateErrorEvent(FaultHelper.AssemblyLoadError, file, msg));
+				}
 			}
 		}
 

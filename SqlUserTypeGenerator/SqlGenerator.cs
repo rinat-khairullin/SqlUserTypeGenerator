@@ -6,7 +6,7 @@ using SqlUserTypeGenerator.Helpers;
 
 namespace SqlUserTypeGenerator
 {
-	public class SqlGenerator
+	internal class SqlGenerator
 	{
 		internal static SqlUserTypeDefinition GenerateUserType(Type type, CustomAttributeData sqlUserTypeAttributeData)
 		{

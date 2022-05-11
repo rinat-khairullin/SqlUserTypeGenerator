@@ -11,17 +11,17 @@ namespace SqlUserTypeGenerator
 		private delegate IColumnTextGenerator GeneratorCreateFunc(PropertyInfo pi);
 
 		private static readonly Dictionary<Type, GeneratorCreateFunc> Generators = new Dictionary<Type, GeneratorCreateFunc>()
-		{			
-			{typeof(long), CreateColumnTextGenerator("bigint")},
-			{typeof(string), CreateNvarcharColumnGenerator("nvarchar")},
-			{typeof(decimal), CreateDecimalColumnGenerator()},
-			{typeof(bool), CreateColumnTextGenerator("bit")},
-			{typeof(DateTime), CreateDateColumnGenerator()},
-			{typeof(double), CreateColumnTextGenerator("float")},
-			{typeof(int), CreateColumnTextGenerator("int")},
-			{typeof(Guid), CreateColumnTextGenerator("uniqueidentifier")},
-			{typeof(byte[]), CreateNvarcharColumnGenerator("varbinary")},
-			{typeof(byte), CreateColumnTextGenerator("tinyint")},
+		{
+			{ typeof(long), CreateColumnTextGenerator("bigint") },
+			{ typeof(string), CreateNvarcharColumnGenerator("nvarchar") },
+			{ typeof(decimal), CreateDecimalColumnGenerator() },
+			{ typeof(bool), CreateColumnTextGenerator("bit") },
+			{ typeof(DateTime), CreateDateColumnGenerator() },
+			{ typeof(double), CreateColumnTextGenerator("float") },
+			{ typeof(int), CreateColumnTextGenerator("int") },
+			{ typeof(Guid), CreateColumnTextGenerator("uniqueidentifier") },
+			{ typeof(byte[]), CreateNvarcharColumnGenerator("varbinary") },
+			{ typeof(byte), CreateColumnTextGenerator("tinyint") },
 		};
 
 		private static GeneratorCreateFunc CreateColumnTextGenerator(string typeName)
@@ -64,6 +64,5 @@ namespace SqlUserTypeGenerator
 				return null;
 			}
 		}
-
 	}
 }

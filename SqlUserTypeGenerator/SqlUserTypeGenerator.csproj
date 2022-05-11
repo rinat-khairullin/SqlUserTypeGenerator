@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\SqlUserTypeGenerator.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,6 +29,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\SqlUserTypeGenerator.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Build.Framework" />
@@ -58,7 +60,7 @@
     <Compile Include="SqlDateColumnAttribute.cs" />
     <Compile Include="SqlDateType.cs" />
     <Compile Include="SqlGenerator.cs" />
-    <Compile Include="SqlGeneratorTask.cs" />
+    <Compile Include="BuildTasks\SqlGeneratorTask.cs" />
     <Compile Include="SqlUserTypeAttribute.cs" />
     <Compile Include="SqlColumnAttribute.cs" />
     <Compile Include="SqlUserTypeDefinition.cs" />
