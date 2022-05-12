@@ -1,31 +1,24 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2000
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32505.173
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlUserTypeGenerator", "SqlUserTypeGenerator\SqlUserTypeGenerator.csproj", "{11E808BF-CCE0-4B3B-9A9C-6C6A11041AF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlUserTypeGenerator", "SqlUserTypeGenerator\SqlUserTypeGenerator.csproj", "{11E808BF-CCE0-4B3B-9A9C-6C6A11041AF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbClasses", "DbClasses\DbClasses.csproj", "{93D2F48A-432B-47A5-9B53-64508DE2A1B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbClasses", "DbClasses\DbClasses.csproj", "{93D2F48A-432B-47A5-9B53-64508DE2A1B9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbClassesWithCustomSqlFolder", "DbClassesWithCustomSqlFolder\DbClassesWithCustomSqlFolder.csproj", "{8B7843D0-8FDE-4E87-931A-A493326F3395}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{800E93C2-38A3-4902-9ADF-28E4F6590C30}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildProps", "BuildProps", "{0B9F8F5F-B918-48C7-9044-526985F52201}"
 	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		readme.md = readme.md
 		tools\SqlUserTypeGenerator_GlobalProps.props = tools\SqlUserTypeGenerator_GlobalProps.props
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DbMigrations", "DbMigrations", "{8242BDB1-A5FA-483B-ACBD-73A1E026BC47}"
-	ProjectSection(SolutionItems) = preProject
-		DbMigrations\DbClassesWithCustomSqlFolder\user.sql = DbMigrations\DbClassesWithCustomSqlFolder\user.sql
-		DbClasses\GeneratedSqlTypes\t_complex_type_test.sql = DbClasses\GeneratedSqlTypes\t_complex_type_test.sql
-		DbClasses\GeneratedSqlTypes\t_DbClasses_user.sql = DbClasses\GeneratedSqlTypes\t_DbClasses_user.sql
-		DbMigrations\DbClassesWithCustomSqlFolder\t_DbClassesWithCustomSqlFolder_user.sql = DbMigrations\DbClassesWithCustomSqlFolder\t_DbClassesWithCustomSqlFolder_user.sql
-		DbClasses\GeneratedSqlTypes\t_example.sql = DbClasses\GeneratedSqlTypes\t_example.sql
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlUserTypeGenerator.Tests", "SqlUserTypeGenerator.Tests\SqlUserTypeGenerator.Tests.csproj", "{FEB26F4C-FB03-4119-A751-2807D987371D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlUserTypeGenerator.Tests", "SqlUserTypeGenerator.Tests\SqlUserTypeGenerator.Tests.csproj", "{FEB26F4C-FB03-4119-A751-2807D987371D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbMigrations", "DbMigrations\DbMigrations.csproj", "{CE79811C-A984-4946-9606-1EA04E2C7619}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,13 +42,13 @@ Global
 		{FEB26F4C-FB03-4119-A751-2807D987371D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEB26F4C-FB03-4119-A751-2807D987371D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEB26F4C-FB03-4119-A751-2807D987371D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE79811C-A984-4946-9606-1EA04E2C7619}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE79811C-A984-4946-9606-1EA04E2C7619}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE79811C-A984-4946-9606-1EA04E2C7619}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE79811C-A984-4946-9606-1EA04E2C7619}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{0B9F8F5F-B918-48C7-9044-526985F52201} = {800E93C2-38A3-4902-9ADF-28E4F6590C30}
-		{8242BDB1-A5FA-483B-ACBD-73A1E026BC47} = {800E93C2-38A3-4902-9ADF-28E4F6590C30}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1FE3F446-D835-4D73-8F18-24575C506E10}
