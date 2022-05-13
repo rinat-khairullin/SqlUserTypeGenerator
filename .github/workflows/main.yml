@@ -28,9 +28,10 @@ jobs:
        run: nuget restore SqlUserTypeGenerator.sln
        
      - name: Create package
+       working-directory: .\SqlUserTypeGenerator
        run: | 
-         msbuild .\SqlUserTypeGenerator\SqlUserTypeGenerator.csproj /p:Configuration=Release
-         nuget pack .\SqlUserTypeGenerator\SqlUserTypeGenerator.nuspec
+         msbuild .\SqlUserTypeGenerator.csproj /p:Configuration=Release
+         nuget pack .\SqlUserTypeGenerator.nuspec
          
      - name: Publish package
        run: nuget push  **\*.nupkg -apikey ${{secrets.NUGET_API_KEY}} -Source https://www.nuget.org/api/v2/package
