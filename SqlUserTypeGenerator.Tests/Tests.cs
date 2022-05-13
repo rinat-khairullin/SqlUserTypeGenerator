@@ -8,6 +8,7 @@ using NUnit.Framework;
 
 namespace SqlUserTypeGenerator.Tests
 {
+	[TestFixture]
 	public class Tests
 	{
 		[Test]
